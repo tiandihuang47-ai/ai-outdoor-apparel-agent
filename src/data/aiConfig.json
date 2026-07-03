@@ -1,0 +1,10 @@
+{
+  "provider": "qwen",
+  "keys": {
+    "mock": "",
+    "openai": "",
+    "deepseek": "sk-a****78a7",
+    "qwen": "sk-ws-H.RPILDED.VmrN.MEUCIGKJQvl2cyd28ssLpNSQ6uvINsUTFe2sKNbkqsKe3KgpAiEA-oPK8ewSfO_dA-BPoSUtFmhSK7WD6sZLxgBr9kbtlS8"
+  },
+  "imageApiKey": ""
+}

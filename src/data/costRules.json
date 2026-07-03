@@ -1,0 +1,582 @@
+{
+  "quantityRules": [
+    {
+      "maxQuantity": 50,
+      "laborMultiplier": 1.4,
+      "note": "超小单，工费明显偏高"
+    },
+    {
+      "maxQuantity": 100,
+      "laborMultiplier": 1.25,
+      "note": "小单快反，成本偏高"
+    },
+    {
+      "maxQuantity": 300,
+      "laborMultiplier": 1.1,
+      "note": "小批量，成本开始下降"
+    },
+    {
+      "maxQuantity": 999999,
+      "laborMultiplier": 1.0,
+      "note": "常规批量"
+    }
+  ],
+  "priceBandRules": [
+    {
+      "maxRetailPrice": 99,
+      "categories": ["袜子"],
+      "note": "低价袜子价格带，建议控制纱线成本，优先保证弹力和耐磨"
+    },
+    {
+      "maxRetailPrice": 99,
+      "categories": ["帽子"],
+      "note": "低价帽子价格带，建议使用基础面料和简单结构"
+    },
+    {
+      "maxRetailPrice": 99,
+      "categories": ["手套"],
+      "note": "低价手套价格带，建议控制面料和工艺成本"
+    },
+    {
+      "maxRetailPrice": 99,
+      "categories": ["围巾"],
+      "note": "低价围巾价格带，建议控制面料成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["冲锋衣"],
+      "note": "199元以内难做合格冲锋衣，可考虑防晒衣或轻薄防风夹克"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["软壳外套"],
+      "note": "199元以内软壳外套需控制复合面料成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["羽绒服"],
+      "note": "199元以内羽绒服难以保证填充和防绒工艺，建议改为棉服或上调价格"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["棉服"],
+      "note": "199元以内棉服填充和工艺空间有限，成本压力较大"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["风衣"],
+      "note": "199元以内难以做出含全衬里的经典风衣，建议简化结构"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["夹克"],
+      "note": "149元以内夹克难以保证面料质感和做工，建议控制辅料成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["T恤"],
+      "note": "低价T恤利润空间有限，建议严控面料克重和工费"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["卫衣"],
+      "note": "99元以内卫衣难以保证纯棉毛圈面料品质，建议控制克重或面料成分"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["连衣裙"],
+      "note": "129元以内连衣裙难以保证里布和拉链品质，建议简化工艺"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["牛仔裤"],
+      "note": "99元以内牛仔裤难以保证洗水和做工品质，建议控制面料和洗水成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["休闲裤"],
+      "note": "79元以内休闲裤利润空间有限，建议使用基础面料和松紧腰结构"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["瑜伽裤"],
+      "note": "低价瑜伽裤需控制面料成本，优先保证高弹性能"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["衬衫"],
+      "note": "59元以内衬衫难以保证领型和袖口品质，建议简化工艺"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["针织衫"],
+      "note": "99元以内针织衫难以保证含毛量和抗起球性能"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["防晒衣"],
+      "note": "基础防晒衣价格带，适合走量款"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["大衣"],
+      "note": "199元以内大衣难以保证含毛量和挺括感，建议简化结构或上调价格"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["西装"],
+      "note": "199元以内西装难以保证版型和做工，建议控制面料和辅料成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["短裤"],
+      "note": "基础短裤价格带，适合走量款"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["泳衣"],
+      "note": "低价泳衣需控制面料成本，优先保证弹力回复和耐氯性"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["睡衣"],
+      "note": "基础睡衣价格带，建议选用纯棉或基础面料"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["保暖内衣"],
+      "note": "低价保暖内衣需控制面料成本，优先保证保暖和舒适度"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["骑行服"],
+      "note": "低价骑行服需控制面料和工艺成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["童装"],
+      "note": "基础童装价格带，建议优先选用A类安全面料"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["运动内衣"],
+      "note": "低价运动内衣需控制面料成本，优先保证高弹和支撑性能"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["工装裤"],
+      "note": "199元以内工装裤需控制面料和辅料成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["POLO衫"],
+      "note": "基础POLO衫价格带，建议控制纽扣和面料成本"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["背心"],
+      "note": "基础背心价格带，适合走量款"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["马甲"],
+      "note": "199元以内马甲填充和工艺空间有限"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["袜子"],
+      "note": "基础袜子价格带，可强调棉质或速干功能"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["帽子"],
+      "note": "基础帽子价格带，可加入防晒或保暖功能"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["手套"],
+      "note": "基础手套价格带，可强调触屏或保暖"
+    },
+    {
+      "maxRetailPrice": 199,
+      "categories": ["围巾"],
+      "note": "基础围巾价格带，可强调保暖或透气"
+    },
+    {
+      "maxRetailPrice": 199,
+      "note": "当前价格带较低，建议严格控制面料和工艺成本"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["冲锋衣"],
+      "note": "适合城市轻户外定位，避免高成本全压胶和三层专业面料"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["软壳外套"],
+      "note": "适合城市通勤定位，避免高成本复合面料"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["羽绒服"],
+      "note": "399元以内羽绒服难以保证90绒填充和防绒工艺，建议上调价格或降低含绒量"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["棉服"],
+      "note": "中低端棉服，注意填充均匀度和做工"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["风衣"],
+      "note": "可加入半衬里，注意面料质感"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["夹克"],
+      "note": "中端夹克，可在面料和细节做工上做升级"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["T恤"],
+      "note": "大众T恤价格带，可提升面料克重和做工"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["卫衣"],
+      "note": "中端卫衣，可强调纯棉毛圈和版型"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["连衣裙"],
+      "note": "中端连衣裙，可在面料和工艺上做适度升级"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["牛仔裤"],
+      "note": "常规牛仔裤，可加入中度洗水工艺"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["休闲裤"],
+      "note": "大众休闲裤，建议选用舒适基础面料"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["瑜伽裤"],
+      "note": "中端瑜伽裤，可强调塑形和速干"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["衬衫"],
+      "note": "商务休闲衬衫，注意领型和袖口做工"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["针织衫"],
+      "note": "基础针织衫，控制起球和缩水"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["防晒衣"],
+      "note": "可加入网眼拼接或更多口袋设计"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["大衣"],
+      "note": "399元以内大衣含毛量有限，建议控制面料成本或简化工艺"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["西装"],
+      "note": "中端西装，可在面料和做工上做适度升级"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["短裤"],
+      "note": "中端短裤，可加入速干或弹力功能"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["泳衣"],
+      "note": "中端泳衣，可强调抗氯、高弹和修身剪裁"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["睡衣"],
+      "note": "中端睡衣，可提升面料质感和舒适度"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["保暖内衣"],
+      "note": "中端保暖内衣，可强调德绒、无痕等卖点"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["滑雪服"],
+      "note": "399元以内滑雪服难以保证专业防水透湿，建议上调价格或降低功能定位"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["骑行服"],
+      "note": "中端骑行服，可强调透气、速干和专业剪裁"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["童装"],
+      "note": "中端童装，可强调A类安全和舒适面料"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["运动内衣"],
+      "note": "中端运动内衣，可强调支撑、速干和塑形"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["工装裤"],
+      "note": "中端工装裤，可提升面料耐磨和口袋细节"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["POLO衫"],
+      "note": "中端POLO衫，可提升珠地网眼或免烫面料"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["背心"],
+      "note": "中端背心，可加入速干或磨毛功能"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["马甲"],
+      "note": "中端马甲，可提升填充和防绒工艺"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["袜子"],
+      "note": "中端袜子，可强调美利奴羊毛或专业运动功能"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["帽子"],
+      "note": "中端帽子，可提升面料质感和做工"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["手套"],
+      "note": "中端手套，可强调触屏、防风等专业功能"
+    },
+    {
+      "maxRetailPrice": 399,
+      "categories": ["围巾"],
+      "note": "中端围巾，可提升面料质感和保暖性"
+    },
+    {
+      "maxRetailPrice": 399,
+      "note": "适合大众价格带，建议平衡面料品质与成本控制"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["冲锋衣"],
+      "note": "可以提升面料和功能结构"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["软壳外套"],
+      "note": "可用中高端复合面料，增强弹力和耐磨"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["羽绒服"],
+      "note": "可尝试90绒填充和更好的防绒工艺"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["棉服"],
+      "note": "可提升填充品质和面料质感"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["风衣"],
+      "note": "可考虑全衬里和更挺括面料"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["夹克"],
+      "note": "可提升面料质感和细节做工"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["瑜伽裤"],
+      "note": "可强调高腰塑形和专业运动性能"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["大衣"],
+      "note": "可提升含毛量和里布品质"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["西装"],
+      "note": "可提升面料档次和定制工艺"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["滑雪服"],
+      "note": "可提升防水透湿性能和功能结构"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["骑行服"],
+      "note": "可强调专业运动性能和高端面料"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["童装"],
+      "note": "中高端童装，可强调有机棉或功能面料"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["运动内衣"],
+      "note": "中高端运动内衣，可强调专业支撑和高端面料"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["工装裤"],
+      "note": "中高端工装裤，可提升防泼水和耐磨面料"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["POLO衫"],
+      "note": "中高端POLO衫，可强调长绒棉或商务免烫"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["背心"],
+      "note": "中高端背心，可强调高端面料和细节做工"
+    },
+    {
+      "maxRetailPrice": 599,
+      "categories": ["马甲"],
+      "note": "中高端马甲，可加入羽绒填充或软壳面料"
+    },
+    {
+      "maxRetailPrice": 599,
+      "note": "可提升面料或工艺档次，突出差异化卖点"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["冲锋衣"],
+      "note": "可以考虑更高性能面料和复杂工艺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["软壳外套"],
+      "note": "可考虑专业级复合面料和复杂结构"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["羽绒服"],
+      "note": "可考虑高蓬松度羽绒和高端防绒工艺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["风衣"],
+      "note": "可加入防水透湿功能或高端辅料"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["大衣"],
+      "note": "可以考虑高端羊毛/羊绒面料和全衬里工艺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["西装"],
+      "note": "可以考虑高端羊毛面料和定制工艺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["短裤"],
+      "note": "可尝试高端功能面料和复杂结构"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["泳衣"],
+      "note": "可以考虑高端莱卡和专业竞速设计"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["睡衣"],
+      "note": "可以考虑真丝、莫代尔等高端面料"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["保暖内衣"],
+      "note": "可以考虑美利奴羊毛等高端保暖面料"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["滑雪服"],
+      "note": "可以考虑三层压胶和专业级功能结构"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["骑行服"],
+      "note": "可以考虑专业竞赛级面料和结构"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["童装"],
+      "note": "可以考虑高端面料和复杂工艺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["运动内衣"],
+      "note": "可以考虑专业竞赛级面料和结构"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["工装裤"],
+      "note": "可以考虑专业户外耐磨防泼水面料"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["POLO衫"],
+      "note": "可以考虑高端长绒棉或桑蚕丝混纺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["背心"],
+      "note": "可以考虑高端功能面料和复杂结构"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["马甲"],
+      "note": "可以考虑羽绒填充和高端防风面料"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["袜子"],
+      "note": "可以考虑高端功能纱线和专业运动设计"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["帽子"],
+      "note": "可以考虑高端面料和品牌工艺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["手套"],
+      "note": "可以考虑高端防风防水和专业功能"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "categories": ["围巾"],
+      "note": "可以考虑羊绒等高端面料和复杂工艺"
+    },
+    {
+      "maxRetailPrice": 999999,
+      "note": "可以考虑更高性能面料和复杂工艺"
+    }
+  ]
+}

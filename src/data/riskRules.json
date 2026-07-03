@@ -1,0 +1,900 @@
+{
+  "rules": [
+    {
+      "id": "risk_001",
+      "category": "成本风险",
+      "condition": "targetPrice <= 199 && category == '冲锋衣'",
+      "message": "199元以内难做合格冲锋衣，建议上调价格带或改为防晒衣/轻薄防风夹克",
+      "severity": "高"
+    },
+    {
+      "id": "risk_002",
+      "category": "成本风险",
+      "condition": "targetPrice <= 399 && fabricStructure == '3L'",
+      "message": "高性能三层面料可能导致成本超过399元价格带",
+      "severity": "高"
+    },
+    {
+      "id": "risk_003",
+      "category": "成本风险",
+      "condition": "targetPrice <= 399 && processType == 'fullSeamTaping'",
+      "message": "全压胶工艺成本高昂，不适合399元以下价格带",
+      "severity": "高"
+    },
+    {
+      "id": "risk_004",
+      "category": "成本风险",
+      "condition": "costRate > 0.45",
+      "message": "当前成本率偏高，若用于抖音电商销售，可能压缩投流和利润空间",
+      "severity": "高"
+    },
+    {
+      "id": "risk_005",
+      "category": "面料风险",
+      "condition": "orderQuantity <= 100 && stockStatus != '现货'",
+      "message": "订单量小，建议优先选择现货面料。非现货面料可能影响交期和生产灵活性",
+      "severity": "高"
+    },
+    {
+      "id": "risk_006",
+      "category": "面料风险",
+      "condition": "orderQuantity <= 100 && moqMeters > 300",
+      "message": "面料起订量超过300米，100件小单可能无法满足起订要求",
+      "severity": "高"
+    },
+    {
+      "id": "risk_007",
+      "category": "面料风险",
+      "condition": "orderQuantity <= 100 && stockStatus == '需定织'",
+      "message": "需定织面料会严重影响小单快反速度，建议替换为现货面料",
+      "severity": "高"
+    },
+    {
+      "id": "risk_008",
+      "category": "面料风险",
+      "condition": "functions.includes('强防水') && hydrostaticHead < 10000",
+      "message": "当前面料静水压不足10000mm，不建议宣传为强防水",
+      "severity": "中"
+    },
+    {
+      "id": "risk_009",
+      "category": "面料风险",
+      "condition": "functions.includes('防风') && !windproof",
+      "message": "当前面料不防风，无法满足防风需求",
+      "severity": "高"
+    },
+    {
+      "id": "risk_010",
+      "category": "面料风险",
+      "condition": "functions.includes('透湿') && breathability < 3000",
+      "message": "当前面料透湿率低于3000，运动时可能闷热",
+      "severity": "中"
+    },
+    {
+      "id": "risk_011",
+      "category": "生产风险",
+      "condition": "orderQuantity <= 100",
+      "message": "100件小单工费偏高，建议与工厂协商小单快反工价",
+      "severity": "中"
+    },
+    {
+      "id": "risk_012",
+      "category": "生产风险",
+      "condition": "productionDifficulty == '高'",
+      "message": "生产工艺复杂，小单生产时工厂配合度可能不高",
+      "severity": "中"
+    },
+    {
+      "id": "risk_013",
+      "category": "生产风险",
+      "condition": "orderQuantity <= 50",
+      "message": "50件以下超小单，工费系数1.4，单位成本明显偏高",
+      "severity": "高"
+    },
+    {
+      "id": "risk_014",
+      "category": "宣传风险",
+      "condition": "category == '冲锋衣' && hydrostaticHead < 5000",
+      "message": "静水压未达到基本防水要求，不建议作为冲锋衣宣传",
+      "severity": "高"
+    },
+    {
+      "id": "risk_015",
+      "category": "宣传风险",
+      "condition": "category == '软壳外套' && hydrostaticHead < 5000",
+      "message": "防泼水不等于强防水，营销文案需避免夸大防水性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_016",
+      "category": "宣传风险",
+      "condition": "category == '防晒衣' && upf < 50",
+      "message": "UPF值低于50，不建议宣传为UPF50+",
+      "severity": "高"
+    },
+    {
+      "id": "risk_017",
+      "category": "宣传风险",
+      "condition": "true",
+      "message": "防泼水不等于强防水，营销文案需要避免功能夸大",
+      "severity": "低"
+    },
+    {
+      "id": "risk_018",
+      "category": "宣传风险",
+      "condition": "true",
+      "message": "如果供应商不能提供检测报告，不建议直接宣称产品功能达标",
+      "severity": "中"
+    },
+    {
+      "id": "risk_019",
+      "category": "小单快反风险",
+      "condition": "orderQuantity <= 100 && (productionDifficulty == '高' || productionDifficulty == '中高')",
+      "message": "工艺复杂度较高，小单快反时生产排期可能受限",
+      "severity": "中"
+    },
+    {
+      "id": "risk_020",
+      "category": "小单快反风险",
+      "condition": "orderQuantity <= 100 && pockets.includes('胸袋')",
+      "message": "多口袋设计会增加工费和辅料成本",
+      "severity": "低"
+    },
+    {
+      "id": "risk_021",
+      "category": "小单快反风险",
+      "condition": "orderQuantity <= 100 && ventilation.includes('腋下')",
+      "message": "腋下透气拉链增加工艺复杂度，100件小单需评估成本",
+      "severity": "低"
+    },
+    {
+      "id": "risk_022",
+      "category": "成本风险",
+      "condition": "targetPrice <= 299 && category == '软壳外套'",
+      "message": "299元以内软壳外套需控制面料成本，建议选用入门级复合面料",
+      "severity": "中"
+    },
+    {
+      "id": "risk_023",
+      "category": "成本风险",
+      "condition": "targetPrice <= 399 && category == '羽绒服'",
+      "message": "399元以内羽绒服难以保证90绒填充和防绒工艺，建议上调价格或降低含绒量",
+      "severity": "高"
+    },
+    {
+      "id": "risk_024",
+      "category": "生产风险",
+      "condition": "category == '羽绒服'",
+      "message": "羽绒服需重点关注钻绒问题，建议要求供应商做防绒测试",
+      "severity": "高"
+    },
+    {
+      "id": "risk_025",
+      "category": "宣传风险",
+      "condition": "category == '羽绒服' && !name.includes('绒')",
+      "message": "羽绒服营销需明确填充物类型和含绒量，避免模糊宣传",
+      "severity": "中"
+    },
+    {
+      "id": "risk_026",
+      "category": "成本风险",
+      "condition": "targetPrice <= 199 && category == '棉服'",
+      "message": "199元以内棉服填充和工艺空间有限，成本压力较大",
+      "severity": "中"
+    },
+    {
+      "id": "risk_027",
+      "category": "面料风险",
+      "condition": "category == '风衣' && !windproof",
+      "message": "风衣若不防风，核心功能会大打折扣，建议更换面料或调整定位",
+      "severity": "中"
+    },
+    {
+      "id": "risk_028",
+      "category": "成本风险",
+      "condition": "targetPrice <= 199 && category == '风衣'",
+      "message": "199元以内难以做出含全衬里的经典风衣，建议简化结构",
+      "severity": "中"
+    },
+    {
+      "id": "risk_029",
+      "category": "成本风险",
+      "condition": "targetPrice <= 59 && category == 'T恤'",
+      "message": "59元以内T恤利润空间极薄，建议做走量款时严控面料和工费",
+      "severity": "高"
+    },
+    {
+      "id": "risk_030",
+      "category": "面料风险",
+      "condition": "category == 'T恤' && !composition.includes('棉')",
+      "message": "纯棉T恤更受大众认可，非棉面料需明确标注成分",
+      "severity": "低"
+    },
+    {
+      "id": "risk_031",
+      "category": "成本风险",
+      "condition": "targetPrice <= 99 && category == '卫衣'",
+      "message": "99元以内卫衣难以保证纯棉毛圈面料品质，建议控制克重或面料成分",
+      "severity": "中"
+    },
+    {
+      "id": "risk_032",
+      "category": "生产风险",
+      "condition": "category == '卫衣' && hood.includes('连帽')",
+      "message": "连帽卫衣帽绳穿绳工序增加工费，小单需核算清楚",
+      "severity": "低"
+    },
+    {
+      "id": "risk_033",
+      "category": "成本风险",
+      "condition": "targetPrice <= 129 && category == '连衣裙'",
+      "message": "129元以内连衣裙难以保证里布和拉链品质，建议简化工艺",
+      "severity": "中"
+    },
+    {
+      "id": "risk_034",
+      "category": "生产风险",
+      "condition": "category == '连衣裙' && closure.includes('拉链')",
+      "message": "连衣裙拉链对位和里布工艺要求高，需严格把控做工",
+      "severity": "中"
+    },
+    {
+      "id": "risk_035",
+      "category": "宣传风险",
+      "condition": "category == '羽绒服' && targetPrice <= 299",
+      "message": "低价羽绒服不建议宣传高含绒量，避免消费者预期落差",
+      "severity": "高"
+    },
+    {
+      "id": "risk_036",
+      "category": "成本风险",
+      "condition": "targetPrice <= 99 && category == '牛仔裤'",
+      "message": "99元以内牛仔裤难以保证洗水和做工品质，建议控制面料和洗水成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_037",
+      "category": "生产风险",
+      "condition": "category == '牛仔裤' && process.includes('洗水')",
+      "message": "牛仔裤洗水工艺复杂，环保和色牢度需重点关注",
+      "severity": "中"
+    },
+    {
+      "id": "risk_038",
+      "category": "成本风险",
+      "condition": "targetPrice <= 79 && category == '休闲裤'",
+      "message": "79元以内休闲裤利润空间有限，建议使用基础面料和松紧腰结构",
+      "severity": "中"
+    },
+    {
+      "id": "risk_039",
+      "category": "面料风险",
+      "condition": "category == '瑜伽裤' && !elasticity.includes('高弹')",
+      "message": "瑜伽裤面料弹力不足会影响运动体验和塑形效果",
+      "severity": "高"
+    },
+    {
+      "id": "risk_040",
+      "category": "生产风险",
+      "condition": "category == '瑜伽裤' && process.includes('四针六线')",
+      "message": "四针六线设备要求高，小单需确认工厂是否有对应设备",
+      "severity": "中"
+    },
+    {
+      "id": "risk_041",
+      "category": "成本风险",
+      "condition": "targetPrice <= 59 && category == '衬衫'",
+      "message": "59元以内衬衫难以保证领型和袖口品质，建议简化工艺",
+      "severity": "中"
+    },
+    {
+      "id": "risk_042",
+      "category": "面料风险",
+      "condition": "category == '衬衫' && composition.includes('100%棉')",
+      "message": "纯棉衬衫易皱，需明确是否做免烫处理",
+      "severity": "低"
+    },
+    {
+      "id": "risk_043",
+      "category": "成本风险",
+      "condition": "targetPrice <= 99 && category == '针织衫'",
+      "message": "99元以内针织衫难以保证含毛量和抗起球性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_044",
+      "category": "宣传风险",
+      "condition": "category == '针织衫' && composition.includes('羊绒')",
+      "message": "含羊绒针织衫需明确含量，避免虚假宣传",
+      "severity": "高"
+    },
+    {
+      "id": "risk_045",
+      "category": "成本风险",
+      "condition": "targetPrice <= 149 && category == '夹克'",
+      "message": "149元以内夹克难以保证面料质感和做工，建议控制辅料成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_046",
+      "category": "面料风险",
+      "condition": "category == '夹克' && !windproof",
+      "message": "夹克若不防风，春秋实用性会下降，建议确认面料性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_047",
+      "category": "宣传风险",
+      "condition": "category == '牛仔裤' && targetPrice <= 79",
+      "message": "低价牛仔裤不建议宣传高端洗水或手工工艺",
+      "severity": "中"
+    },
+    {
+      "id": "risk_048",
+      "category": "成本风险",
+      "condition": "targetPrice <= 199 && category == '大衣'",
+      "message": "199元以内大衣难以保证含毛量，建议简化结构或上调价格",
+      "severity": "高"
+    },
+    {
+      "id": "risk_049",
+      "category": "成本风险",
+      "condition": "targetPrice <= 399 && category == '大衣'",
+      "message": "399元以内大衣面料和工艺空间有限，建议控制里布和辅料成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_050",
+      "category": "面料风险",
+      "condition": "category == '大衣' && !windproof",
+      "message": "大衣若不防风，核心保暖性会大打折扣，建议更换面料或调整定位",
+      "severity": "中"
+    },
+    {
+      "id": "risk_051",
+      "category": "生产风险",
+      "condition": "category == '大衣' && productionDifficulty == '高'",
+      "message": "大衣工艺复杂，小单生产时工厂配合度可能不高",
+      "severity": "中"
+    },
+    {
+      "id": "risk_052",
+      "category": "宣传风险",
+      "condition": "category == '大衣' && composition.includes('羊毛') && !composition.includes('100%羊毛')",
+      "message": "含羊毛大衣需明确羊毛含量，避免宣传误导",
+      "severity": "中"
+    },
+    {
+      "id": "risk_053",
+      "category": "成本风险",
+      "condition": "targetPrice <= 199 && category == '西装'",
+      "message": "199元以内西装难以保证版型和做工，建议控制面料和辅料成本",
+      "severity": "高"
+    },
+    {
+      "id": "risk_054",
+      "category": "生产风险",
+      "condition": "category == '西装' && productionDifficulty == '高'",
+      "message": "西装版型和工艺要求高，需多次试穿调整",
+      "severity": "高"
+    },
+    {
+      "id": "risk_055",
+      "category": "小单快反风险",
+      "condition": "orderQuantity <= 100 && category == '西装'",
+      "message": "西装小单工费偏高，需与工厂核算清楚成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_056",
+      "category": "面料风险",
+      "condition": "category == '西装' && composition.includes('100%棉')",
+      "message": "纯棉西装易皱，需明确是否做免烫处理",
+      "severity": "低"
+    },
+    {
+      "id": "risk_057",
+      "category": "宣传风险",
+      "condition": "category == '西装' && targetPrice <= 299",
+      "message": "低价西装不建议宣传高端面料或定制工艺",
+      "severity": "中"
+    },
+    {
+      "id": "risk_058",
+      "category": "成本风险",
+      "condition": "targetPrice <= 59 && category == '短裤'",
+      "message": "59元以内短裤利润空间有限，建议严控面料和辅料成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_059",
+      "category": "面料风险",
+      "condition": "category == '短裤' && orderQuantity <= 100 && moqMeters > 200",
+      "message": "牛仔面料起订量偏高，100件小单可能无法满足起订要求",
+      "severity": "中"
+    },
+    {
+      "id": "risk_060",
+      "category": "生产风险",
+      "condition": "category == '短裤' && process.includes('洗水')",
+      "message": "牛仔短裤洗水工艺复杂，色牢度需重点关注",
+      "severity": "中"
+    },
+    {
+      "id": "risk_061",
+      "category": "宣传风险",
+      "condition": "category == '短裤' && targetPrice <= 39",
+      "message": "超低价短裤不建议宣传高端面料或复杂工艺",
+      "severity": "低"
+    },
+    {
+      "id": "risk_062",
+      "category": "小单快反风险",
+      "condition": "orderQuantity <= 100 && category == '短裤'",
+      "message": "短裤小单虽简单，但仍需核算面料和辅料成本",
+      "severity": "低"
+    },
+    {
+      "id": "risk_063",
+      "category": "成本风险",
+      "condition": "targetPrice <= 99 && category == '泳衣'",
+      "message": "99元以内泳衣需控制面料成本，优先保证弹力和耐氯性",
+      "severity": "中"
+    },
+    {
+      "id": "risk_064",
+      "category": "面料风险",
+      "condition": "category == '泳衣' && !elasticity.includes('高弹') && !elasticity.includes('超高弹')",
+      "message": "泳衣面料弹力不足会影响穿着体验和回弹性",
+      "severity": "高"
+    },
+    {
+      "id": "risk_065",
+      "category": "生产风险",
+      "condition": "category == '泳衣' && process.includes('四针六线') && orderQuantity <= 100",
+      "message": "四针六线泳衣小单需确认工厂是否有对应设备",
+      "severity": "中"
+    },
+    {
+      "id": "risk_066",
+      "category": "宣传风险",
+      "condition": "category == '泳衣' && targetPrice <= 99",
+      "message": "低价泳衣不建议宣传高端莱卡或专业竞速性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_067",
+      "category": "生产风险",
+      "condition": "category == '泳衣'",
+      "message": "泳衣版型和包边工艺要求高，需注意走光和舒适度",
+      "severity": "中"
+    },
+    {
+      "id": "risk_068",
+      "category": "成本风险",
+      "condition": "targetPrice <= 79 && category == '睡衣'",
+      "message": "79元以内睡衣面料和工艺空间有限，建议控制成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_069",
+      "category": "面料风险",
+      "condition": "category == '睡衣' && composition.includes('100%棉')",
+      "message": "纯棉睡衣缩水率需控制，建议做预缩处理",
+      "severity": "低"
+    },
+    {
+      "id": "risk_070",
+      "category": "生产风险",
+      "condition": "category == '睡衣' && composition.includes('法兰绒')",
+      "message": "法兰绒睡衣易掉毛，需控制浮毛和色牢度",
+      "severity": "中"
+    },
+    {
+      "id": "risk_071",
+      "category": "宣传风险",
+      "condition": "category == '睡衣' && targetPrice <= 49",
+      "message": "超低价睡衣不建议宣传高端面料",
+      "severity": "低"
+    },
+    {
+      "id": "risk_072",
+      "category": "面料风险",
+      "condition": "category == '睡衣' && orderQuantity <= 100 && moqMeters > 200",
+      "message": "睡衣面料起订量偏高，小单需确认供应商起订要求",
+      "severity": "低"
+    },
+    {
+      "id": "risk_073",
+      "category": "成本风险",
+      "condition": "targetPrice <= 99 && category == '保暖内衣'",
+      "message": "99元以内保暖内衣难以保证德绒等保暖成分含量",
+      "severity": "中"
+    },
+    {
+      "id": "risk_074",
+      "category": "面料风险",
+      "condition": "category == '保暖内衣' && !composition.includes('腈纶') && !composition.includes('羊毛') && !composition.includes('德绒') && !composition.includes('磨毛')",
+      "message": "保暖内衣建议选用腈纶、羊毛、磨毛等保暖成分面料",
+      "severity": "中"
+    },
+    {
+      "id": "risk_075",
+      "category": "生产风险",
+      "condition": "category == '保暖内衣' && process.includes('无痕') && orderQuantity <= 100",
+      "message": "无痕保暖内衣小单需注意裁切和热压工艺，防止脱散",
+      "severity": "中"
+    },
+    {
+      "id": "risk_076",
+      "category": "宣传风险",
+      "condition": "category == '保暖内衣' && composition.includes('德绒')",
+      "message": "德绒为面料商商标，宣传需谨慎避免侵权",
+      "severity": "高"
+    },
+    {
+      "id": "risk_077",
+      "category": "面料风险",
+      "condition": "category == '保暖内衣' && !elasticity.includes('弹')",
+      "message": "保暖内衣弹力不足会影响贴身保暖效果",
+      "severity": "中"
+    },
+    {
+      "id": "risk_078",
+      "category": "成本风险",
+      "condition": "targetPrice <= 399 && category == '滑雪服'",
+      "message": "399元以内滑雪服难以保证专业防水透湿，建议上调价格或降低功能定位",
+      "severity": "高"
+    },
+    {
+      "id": "risk_079",
+      "category": "面料风险",
+      "condition": "category == '滑雪服' && hydrostaticHead < 10000",
+      "message": "专业滑雪服建议静水压10000mm以上",
+      "severity": "高"
+    },
+    {
+      "id": "risk_080",
+      "category": "面料风险",
+      "condition": "category == '滑雪服' && breathability < 5000",
+      "message": "滑雪服透湿率偏低，运动量大时可能闷热",
+      "severity": "中"
+    },
+    {
+      "id": "risk_081",
+      "category": "生产风险",
+      "condition": "category == '滑雪服' && process.includes('压胶') && orderQuantity <= 100",
+      "message": "压胶滑雪服小单成本高，需评估工厂产能和交期",
+      "severity": "高"
+    },
+    {
+      "id": "risk_082",
+      "category": "宣传风险",
+      "condition": "category == '滑雪服' && hydrostaticHead < 5000",
+      "message": "静水压不足，不建议宣传为专业滑雪服",
+      "severity": "高"
+    },
+    {
+      "id": "risk_083",
+      "category": "成本风险",
+      "condition": "targetPrice <= 99 && category == '骑行服'",
+      "message": "99元以内骑行服面料和工艺空间有限",
+      "severity": "中"
+    },
+    {
+      "id": "risk_084",
+      "category": "面料风险",
+      "condition": "category == '骑行服' && !elasticity.includes('高弹') && !elasticity.includes('超高弹')",
+      "message": "骑行服面料弹力不足会影响运动体验和贴合度",
+      "severity": "高"
+    },
+    {
+      "id": "risk_085",
+      "category": "生产风险",
+      "condition": "category == '骑行服' && process.includes('网眼') && orderQuantity <= 100",
+      "message": "网眼拼接骑行服小单工艺复杂度增加",
+      "severity": "中"
+    },
+    {
+      "id": "risk_086",
+      "category": "宣传风险",
+      "condition": "category == '骑行服' && targetPrice <= 99",
+      "message": "低价骑行服不建议宣传专业竞赛级性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_087",
+      "category": "生产风险",
+      "condition": "category == '骑行服'",
+      "message": "骑行服版型和口袋位置需符合骑行姿势",
+      "severity": "中"
+    },
+    {
+      "id": "risk_088",
+      "category": "成本风险",
+      "condition": "targetPrice <= 59 && category == '童装'",
+      "message": "59元以内童装利润空间有限，需严控面料和工艺成本",
+      "severity": "高"
+    },
+    {
+      "id": "risk_089",
+      "category": "面料风险",
+      "condition": "category == '童装' && !composition.includes('棉') && !composition.includes('A类')",
+      "message": "儿童服装建议选用亲肤安全的棉质或A类面料，非棉面料需明确标注成分",
+      "severity": "中"
+    },
+    {
+      "id": "risk_090",
+      "category": "生产风险",
+      "condition": "category == '童装' && (hood.includes('帽绳') || closure.includes('抽绳'))",
+      "message": "儿童服装绳带需符合安全标准，避免过长或误吞风险",
+      "severity": "高"
+    },
+    {
+      "id": "risk_091",
+      "category": "宣传风险",
+      "condition": "category == '童装' && targetPrice <= 39",
+      "message": "超低价童装不建议宣传高端面料或复杂工艺",
+      "severity": "中"
+    },
+    {
+      "id": "risk_092",
+      "category": "面料风险",
+      "condition": "category == '童装' && orderQuantity <= 100 && moqMeters > 200",
+      "message": "童装面料起订量偏高，小单需确认供应商起订要求",
+      "severity": "低"
+    },
+    {
+      "id": "risk_093",
+      "category": "面料风险",
+      "condition": "category == '运动内衣' && !elasticity.includes('高弹') && !elasticity.includes('超高弹')",
+      "message": "运动内衣面料弹力不足会影响支撑和运动体验",
+      "severity": "高"
+    },
+    {
+      "id": "risk_094",
+      "category": "生产风险",
+      "condition": "category == '运动内衣' && process.includes('四针六线') && orderQuantity <= 100",
+      "message": "四针六线运动内衣小单需确认工厂是否有对应设备",
+      "severity": "中"
+    },
+    {
+      "id": "risk_095",
+      "category": "成本风险",
+      "condition": "targetPrice <= 99 && category == '运动内衣'",
+      "message": "99元以内运动内衣面料和工艺空间有限",
+      "severity": "中"
+    },
+    {
+      "id": "risk_096",
+      "category": "宣传风险",
+      "condition": "category == '运动内衣' && targetPrice <= 99",
+      "message": "低价运动内衣不建议宣传专业竞赛级性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_097",
+      "category": "成本风险",
+      "condition": "targetPrice <= 129 && category == '工装裤'",
+      "message": "129元以内工装裤面料和辅料空间有限",
+      "severity": "中"
+    },
+    {
+      "id": "risk_098",
+      "category": "面料风险",
+      "condition": "category == '工装裤' && !abrasionResistance.includes('高') && !abrasionResistance.includes('极高')",
+      "message": "工装裤耐磨性不足会影响使用寿命",
+      "severity": "高"
+    },
+    {
+      "id": "risk_099",
+      "category": "生产风险",
+      "condition": "category == '工装裤' && pockets.includes('贴袋')",
+      "message": "多口袋工装裤工费和辅料成本偏高",
+      "severity": "中"
+    },
+    {
+      "id": "risk_100",
+      "category": "宣传风险",
+      "condition": "category == '工装裤' && waterRepellent == '无'",
+      "message": "无防泼水工装裤不建议宣传为户外防水裤",
+      "severity": "中"
+    },
+    {
+      "id": "risk_101",
+      "category": "成本风险",
+      "condition": "targetPrice <= 79 && category == 'POLO衫'",
+      "message": "79元以内POLO衫难以保证翻领和袖口品质",
+      "severity": "中"
+    },
+    {
+      "id": "risk_102",
+      "category": "面料风险",
+      "condition": "category == 'POLO衫' && composition.includes('100%棉')",
+      "message": "纯棉POLO衫易皱，需明确是否做免烫处理",
+      "severity": "低"
+    },
+    {
+      "id": "risk_103",
+      "category": "生产风险",
+      "condition": "category == 'POLO衫' && process.includes('领尖撑')",
+      "message": "领尖撑和翻领工艺对做工要求较高",
+      "severity": "中"
+    },
+    {
+      "id": "risk_104",
+      "category": "宣传风险",
+      "condition": "category == 'POLO衫' && targetPrice <= 59",
+      "message": "超低价POLO衫不建议宣传高端面料或商务免烫",
+      "severity": "中"
+    },
+    {
+      "id": "risk_105",
+      "category": "成本风险",
+      "condition": "targetPrice <= 39 && category == '背心'",
+      "message": "39元以内背心利润空间有限，需严控面料和工费",
+      "severity": "中"
+    },
+    {
+      "id": "risk_106",
+      "category": "面料风险",
+      "condition": "category == '背心' && !composition.includes('棉') && !composition.includes('莫代尔')",
+      "message": "背心建议选用亲肤透气的棉质或莫代尔面料",
+      "severity": "中"
+    },
+    {
+      "id": "risk_107",
+      "category": "生产风险",
+      "condition": "category == '背心' && process.includes('网眼') && orderQuantity <= 100",
+      "message": "网眼拼接背心小单需确认产能",
+      "severity": "低"
+    },
+    {
+      "id": "risk_108",
+      "category": "宣传风险",
+      "condition": "category == '背心' && targetPrice <= 29",
+      "message": "超低价背心不建议宣传高端面料或功能",
+      "severity": "低"
+    },
+    {
+      "id": "risk_109",
+      "category": "成本风险",
+      "condition": "targetPrice <= 149 && category == '马甲'",
+      "message": "149元以内马甲难以保证填充和做工品质",
+      "severity": "中"
+    },
+    {
+      "id": "risk_110",
+      "category": "面料风险",
+      "condition": "category == '马甲' && !windproof",
+      "message": "马甲若不防风，秋冬保暖性会大打折扣",
+      "severity": "高"
+    },
+    {
+      "id": "risk_111",
+      "category": "生产风险",
+      "condition": "category == '马甲' && process.includes('防绒')",
+      "message": "羽绒马甲需重点关注钻绒问题",
+      "severity": "高"
+    },
+    {
+      "id": "risk_112",
+      "category": "宣传风险",
+      "condition": "category == '马甲' && targetPrice <= 99",
+      "message": "低价马甲不建议宣传高端填充或防风性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_113",
+      "category": "成本风险",
+      "condition": "targetPrice <= 19 && category == '袜子'",
+      "message": "19元以内袜子利润空间有限，建议严控纱线和工费成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_114",
+      "category": "面料风险",
+      "condition": "category == '袜子' && !elasticity.includes('弹')",
+      "message": "袜子弹力不足会影响穿着舒适度和贴合度",
+      "severity": "高"
+    },
+    {
+      "id": "risk_115",
+      "category": "生产风险",
+      "condition": "category == '袜子' && orderQuantity <= 100",
+      "message": "小单袜子需注意袜口弹性、耐磨性和尺码覆盖",
+      "severity": "中"
+    },
+    {
+      "id": "risk_116",
+      "category": "宣传风险",
+      "condition": "category == '袜子' && composition.includes('羊毛') && targetPrice <= 29",
+      "message": "低价含羊毛袜子需明确羊毛含量，避免虚假宣传",
+      "severity": "中"
+    },
+    {
+      "id": "risk_117",
+      "category": "成本风险",
+      "condition": "targetPrice <= 29 && category == '帽子'",
+      "message": "29元以内帽子面料和工艺空间有限",
+      "severity": "中"
+    },
+    {
+      "id": "risk_118",
+      "category": "面料风险",
+      "condition": "category == '帽子' && functions.includes('防晒') && upf < 50",
+      "message": "UPF值低于50，不建议宣传为UPF50+防晒帽",
+      "severity": "高"
+    },
+    {
+      "id": "risk_119",
+      "category": "生产风险",
+      "condition": "category == '帽子' && process.includes('刺绣') && orderQuantity <= 100",
+      "message": "刺绣小单起版费高，需核算到单件成本",
+      "severity": "中"
+    },
+    {
+      "id": "risk_120",
+      "category": "宣传风险",
+      "condition": "category == '帽子' && targetPrice <= 39",
+      "message": "低价帽子不建议宣传高端品牌工艺",
+      "severity": "中"
+    },
+    {
+      "id": "risk_121",
+      "category": "成本风险",
+      "condition": "targetPrice <= 29 && category == '手套'",
+      "message": "29元以内手套难以保证触屏和保暖功能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_122",
+      "category": "面料风险",
+      "condition": "category == '手套' && functions.includes('触屏') && !process.includes('导电')",
+      "message": "触屏功能需配合导电布工艺，否则可能不灵敏",
+      "severity": "高"
+    },
+    {
+      "id": "risk_123",
+      "category": "生产风险",
+      "condition": "category == '手套' && orderQuantity <= 100",
+      "message": "小单手套尺码多、版型复杂，需控制做工和交期",
+      "severity": "中"
+    },
+    {
+      "id": "risk_124",
+      "category": "宣传风险",
+      "condition": "category == '手套' && targetPrice <= 39",
+      "message": "低价手套不建议宣传高端防风防水性能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_125",
+      "category": "成本风险",
+      "condition": "targetPrice <= 39 && category == '围巾'",
+      "message": "39元以内围巾面料和工艺空间有限",
+      "severity": "中"
+    },
+    {
+      "id": "risk_126",
+      "category": "面料风险",
+      "condition": "category == '围巾' && composition.includes('羊毛') && !composition.includes('100%羊毛')",
+      "message": "含羊毛围巾需明确羊毛含量，避免宣传误导",
+      "severity": "中"
+    },
+    {
+      "id": "risk_127",
+      "category": "生产风险",
+      "condition": "category == '围巾' && process.includes('流苏') && orderQuantity <= 100",
+      "message": "流苏工艺增加小单工费，需评估产能",
+      "severity": "中"
+    },
+    {
+      "id": "risk_128",
+      "category": "宣传风险",
+      "condition": "category == '围巾' && targetPrice <= 49",
+      "message": "低价围巾不建议宣传高端面料或复杂工艺",
+      "severity": "中"
+    }
+  ]
+}
