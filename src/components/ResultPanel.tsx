@@ -9,6 +9,8 @@ import RiskWarnings from './RiskWarnings';
 import ExportButton from './ExportButton';
 import ImageGenerator from './ImageGenerator';
 import ShareButton from './ShareButton';
+import GlassCard from './ui/GlassCard';
+import EmptyState from './ui/EmptyState';
 
 interface ResultPanelProps {
   result: GenerationResult | null;
@@ -17,45 +19,59 @@ interface ResultPanelProps {
 export default function ResultPanel({ result }: ResultPanelProps) {
   if (!result) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-slate-500 py-20">
-        <div className="text-6xl mb-4">🧥</div>
-        <p className="text-lg">输入需求后，研发方案将在此展示</p>
-        <p className="text-sm mt-2">支持自然语言和结构化表单两种输入方式</p>
-      </div>
+      <GlassCard hover={false}>
+        <EmptyState
+          icon="🧥"
+          title="等待输入需求"
+          description="输入需求后，AI 生成的研发方案将在此展示。支持自然语言和结构化表单两种输入方式。"
+        />
+      </GlassCard>
     );
   }
 
   return (
-    <div className="space-y-8">
-      <div className="bg-gradient-to-r from-blue-900/20 to-cyan-900/20 rounded-xl border border-blue-500/30 p-5">
+    <div className="space-y-6">
+      <GlassCard className="gradient-border" glow>
         <h2 className="text-xl font-bold text-white mb-3">📋 研发方案总览</h2>
         <p className="text-slate-300">{result.summary}</p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <span className="px-2 py-1 rounded bg-blue-600/30 text-blue-300 text-xs">
+          <span className="px-2 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 text-xs border border-indigo-500/20">
             {result.parsedRequirement.category}
           </span>
-          <span className="px-2 py-1 rounded bg-cyan-600/30 text-cyan-300 text-xs">
+          <span className="px-2 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 text-xs border border-cyan-500/20">
             {result.parsedRequirement.gender}
           </span>
-          <span className="px-2 py-1 rounded bg-emerald-600/30 text-emerald-300 text-xs">
+          <span className="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs border border-emerald-500/20">
             {result.parsedRequirement.targetPrice}元
           </span>
-          <span className="px-2 py-1 rounded bg-purple-600/30 text-purple-300 text-xs">
+          <span className="px-2 py-1 rounded-lg bg-purple-500/20 text-purple-300 text-xs border border-purple-500/20">
             {result.parsedRequirement.orderQuantity}件
           </span>
         </div>
-      </div>
+      </GlassCard>
 
       <ImageGenerator result={result} />
 
       <ShareButton result={result} />
 
-      <RequireAnalysis requirement={result.parsedRequirement} />
-      <FabricRecommendation fabricScores={result.fabricRecommendations} />
-      <StyleDesign style={result.selectedStyle} />
-      <CostTable cost={result.costResult} />
-      <MarketingCopy copy={result.marketingCopy} result={result} category={result.parsedRequirement.category} />
-      <RiskWarnings warnings={result.riskWarnings} />
+      <GlassCard>
+        <RequireAnalysis requirement={result.parsedRequirement} />
+      </GlassCard>
+      <GlassCard>
+        <FabricRecommendation fabricScores={result.fabricRecommendations} />
+      </GlassCard>
+      <GlassCard>
+        <StyleDesign style={result.selectedStyle} />
+      </GlassCard>
+      <GlassCard>
+        <CostTable cost={result.costResult} />
+      </GlassCard>
+      <GlassCard>
+        <MarketingCopy copy={result.marketingCopy} result={result} category={result.parsedRequirement.category} />
+      </GlassCard>
+      <GlassCard>
+        <RiskWarnings warnings={result.riskWarnings} />
+      </GlassCard>
       <ExportButton result={result} />
     </div>
   );

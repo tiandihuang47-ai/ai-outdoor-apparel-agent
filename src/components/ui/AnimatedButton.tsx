@@ -6,7 +6,7 @@ interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   loadingText?: string;
   success?: boolean;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'purple';
 }
 
 export default function AnimatedButton({
@@ -29,6 +29,8 @@ export default function AnimatedButton({
       'bg-slate-800 text-slate-200 border border-slate-600 hover:bg-slate-700 hover:border-slate-500',
     ghost:
       'bg-transparent text-slate-300 hover:bg-white/5 hover:text-white',
+    purple:
+      'bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:from-purple-500 hover:to-pink-400 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40',
   };
 
   return (

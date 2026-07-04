@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import GlassCard from './ui/GlassCard';
+import AnimatedButton from './ui/AnimatedButton';
 
 type Provider = 'mock' | 'openai' | 'deepseek' | 'qwen';
 
@@ -96,7 +98,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-6">
+      <GlassCard className="w-full max-w-md" hover={false}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-white">⚙️ AI 接口配置</h2>
           <button
@@ -124,7 +126,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 onChange={(e) =>
                   setSettings((prev) => ({ ...prev, provider: e.target.value as Provider }))
                 }
-                className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-slate-900/80 border border-slate-600 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {PROVIDER_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -207,13 +209,14 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             )}
 
             <div className="pt-2">
-              <button
+              <AnimatedButton
                 onClick={handleSave}
-                disabled={saving}
-                className="w-full py-2.5 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 transition-all disabled:opacity-50"
+                loading={saving}
+                loadingText="保存中..."
+                className="w-full py-3"
               >
-                {saving ? '保存中...' : '保存配置'}
-              </button>
+                保存配置
+              </AnimatedButton>
             </div>
 
             <div className="text-xs text-slate-500 pt-2 border-t border-slate-700">
@@ -247,7 +250,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </div>
           </div>
         )}
-      </div>
+      </GlassCard>
     </div>
   );
 }

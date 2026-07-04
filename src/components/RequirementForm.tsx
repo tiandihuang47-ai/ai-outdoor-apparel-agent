@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { RawRequirement, Gender, Season, FunctionTag, Scene } from '@/types';
+import AnimatedButton from '@/components/ui/AnimatedButton';
 
 interface RequirementFormProps {
   onSubmit: (data: RawRequirement) => void;
@@ -82,20 +83,20 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
       <div className="flex gap-2 mb-4">
         <button
           onClick={() => setMode('natural')}
-          className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-all ${
             mode === 'natural'
-              ? 'bg-blue-600 text-white'
-              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+              ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-lg shadow-indigo-500/25'
+              : 'bg-slate-800 text-slate-300 border border-slate-600 hover:bg-slate-700 hover:border-slate-500'
           }`}
         >
           自然语言输入
         </button>
         <button
           onClick={() => setMode('structured')}
-          className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-all ${
             mode === 'structured'
-              ? 'bg-blue-600 text-white'
-              : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+              ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-lg shadow-indigo-500/25'
+              : 'bg-slate-800 text-slate-300 border border-slate-600 hover:bg-slate-700 hover:border-slate-500'
           }`}
         >
           结构化表单
@@ -110,7 +111,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
               <button
                 key={example.label}
                 onClick={() => handleFillExample(example)}
-                className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white transition-colors"
+                className="text-xs px-2 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-600 hover:bg-slate-700 hover:border-slate-500 hover:text-white transition-all"
               >
                 {example.label}
               </button>
@@ -121,24 +122,29 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
             onChange={(e) => setText(e.target.value)}
             placeholder="请输入你的产品需求，例如：我要做一款女款春秋轻户外冲锋衣，适合城市通勤和露营，要求防小雨、防风、不闷，零售价399元以内，首单100件。"
             rows={6}
-            className="w-full bg-slate-800 border border-slate-600 rounded-lg p-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 resize-none transition-all"
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
+            <AnimatedButton
               onClick={handleNaturalSubmit}
-              disabled={isLoading || !text.trim()}
-              className="py-3 px-6 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:from-slate-600 disabled:to-slate-500 disabled:cursor-not-allowed transition-all"
+              loading={isLoading}
+              loadingText="生成中..."
+              disabled={!text.trim()}
+              className="w-full py-3"
             >
-              {isLoading ? '生成中...' : '🚀 生成单方案'}
-            </button>
+              🚀 生成单方案
+            </AnimatedButton>
             {onCompareSubmit && (
-              <button
+              <AnimatedButton
                 onClick={() => onCompareSubmit({ text: text.trim() })}
-                disabled={isLoading || !text.trim()}
-                className="py-3 px-6 rounded-lg font-medium text-white bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 disabled:from-slate-600 disabled:to-slate-500 disabled:cursor-not-allowed transition-all"
+                loading={isLoading}
+                loadingText="生成中..."
+                disabled={!text.trim()}
+                variant="purple"
+                className="w-full py-3"
               >
-                {isLoading ? '生成中...' : '📊 生成三套方案对比'}
-              </button>
+                📊 生成三套方案对比
+              </AnimatedButton>
             )}
           </div>
         </div>
@@ -153,7 +159,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               placeholder="例如：冲锋衣、连衣裙、羽绒服、牛仔裤"
-              className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
             />
             <p className="text-xs text-slate-500 mt-1">直接输入想做的服装类型，系统会根据描述自动匹配</p>
           </div>
@@ -164,7 +170,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
               <select
                 value={formData.gender}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value as Gender })}
-                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
               >
                 {GENDER_OPTIONS.map((g) => (
                   <option key={g} value={g}>{g}</option>
@@ -177,7 +183,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
                 type="text"
                 value={formData.ageRange}
                 onChange={(e) => setFormData({ ...formData, ageRange: e.target.value })}
-                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
               />
             </div>
           </div>
@@ -189,10 +195,10 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
                 <button
                   key={scene}
                   onClick={() => toggleScene(scene)}
-                  className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                  className={`px-3 py-1.5 rounded-xl text-sm transition-all ${
                     formData.scenes?.includes(scene)
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                      ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
+                      : 'bg-slate-800 text-slate-300 border border-slate-600 hover:bg-slate-700 hover:border-slate-500'
                   }`}
                 >
                   {scene}
@@ -207,7 +213,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
               <select
                 value={formData.season}
                 onChange={(e) => setFormData({ ...formData, season: e.target.value as Season })}
-                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
               >
                 {SEASON_OPTIONS.map((s) => (
                   <option key={s} value={s}>{s}</option>
@@ -220,7 +226,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
                 type="number"
                 value={formData.targetPrice}
                 onChange={(e) => setFormData({ ...formData, targetPrice: Number(e.target.value) })}
-                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
               />
             </div>
           </div>
@@ -232,7 +238,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
                 type="number"
                 value={formData.orderQuantity}
                 onChange={(e) => setFormData({ ...formData, orderQuantity: Number(e.target.value) })}
-                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
               />
             </div>
             <div>
@@ -242,7 +248,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
                 value={formData.stylePreference}
                 onChange={(e) => setFormData({ ...formData, stylePreference: e.target.value })}
                 placeholder="城市轻户外、显瘦、日常通勤"
-                className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
               />
             </div>
           </div>
@@ -254,10 +260,10 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
                 <button
                   key={func}
                   onClick={() => toggleFunction(func)}
-                  className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                  className={`px-3 py-1.5 rounded-xl text-sm transition-all ${
                     formData.functions?.includes(func)
-                      ? 'bg-cyan-600 text-white'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                      ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/25'
+                      : 'bg-slate-800 text-slate-300 border border-slate-600 hover:bg-slate-700 hover:border-slate-500'
                   }`}
                 >
                   {func}
@@ -273,26 +279,31 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder="其他补充说明"
               rows={3}
-              className="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full bg-slate-900/80 border border-slate-600 rounded-xl p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 resize-none transition-all"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
+            <AnimatedButton
               onClick={handleStructuredSubmit}
-              disabled={isLoading || (!formData.category)}
-              className="py-3 px-6 rounded-lg font-medium text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:from-slate-600 disabled:to-slate-500 disabled:cursor-not-allowed transition-all"
+              loading={isLoading}
+              loadingText="生成中..."
+              disabled={!formData.category}
+              className="w-full py-3"
             >
-              {isLoading ? '生成中...' : '🚀 生成单方案'}
-            </button>
+              🚀 生成单方案
+            </AnimatedButton>
             {onCompareSubmit && (
-              <button
+              <AnimatedButton
                 onClick={() => onCompareSubmit(formData)}
-                disabled={isLoading || (!formData.category)}
-                className="py-3 px-6 rounded-lg font-medium text-white bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 disabled:from-slate-600 disabled:to-slate-500 disabled:cursor-not-allowed transition-all"
+                loading={isLoading}
+                loadingText="生成中..."
+                disabled={!formData.category}
+                variant="purple"
+                className="w-full py-3"
               >
-                {isLoading ? '生成中...' : '📊 生成三套方案对比'}
-              </button>
+                📊 生成三套方案对比
+              </AnimatedButton>
             )}
           </div>
         </div>

@@ -249,7 +249,7 @@ export default function HistoryPanel({ onSelect, onCompare }: HistoryPanelProps)
 
   if (history.length === 0) {
     return (
-      <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 backdrop-blur-sm">
+      <div>
         <h3 className="text-base font-semibold text-white mb-2">📜 历史记录</h3>
         <p className="text-sm text-slate-400">暂无生成记录，生成方案后会自动保存到这里。</p>
       </div>
@@ -257,7 +257,7 @@ export default function HistoryPanel({ onSelect, onCompare }: HistoryPanelProps)
   }
 
   return (
-    <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 backdrop-blur-sm">
+    <div>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-base font-semibold text-white">📜 历史记录</h3>
         <div className="flex items-center gap-2">
