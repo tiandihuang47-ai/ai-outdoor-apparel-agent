@@ -1,4 +1,14 @@
 import type { GenerationResult } from '@/types';
+import {
+  localHistory,
+  cloudHistory,
+  setHistoryBackend,
+  getCurrentBackend,
+  loadHistory,
+  persistHistory,
+} from './userHistory';
+
+export { setHistoryBackend, getCurrentBackend, localHistory, cloudHistory };
 
 export interface ScenarioHistoryItem {
   tier: 'basic' | 'mid' | 'premium';
@@ -17,40 +27,22 @@ export interface HistoryItem {
   data: GenerationResult | ScenarioHistoryItem[];
 }
 
-const STORAGE_KEY = 'ai-outdoor-apparel-agent-history';
 const MAX_ITEMS = 50;
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function isBrowser(): boolean {
-  return typeof window !== 'undefined';
+export async function getHistory(): Promise<HistoryItem[]> {
+  return loadHistory();
 }
 
-export function getHistory(): HistoryItem[] {
-  if (!isBrowser()) return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as HistoryItem[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+async function saveHistory(items: HistoryItem[]): Promise<void> {
+  return persistHistory(items.slice(0, MAX_ITEMS));
 }
 
-function saveHistory(items: HistoryItem[]): void {
-  if (!isBrowser()) return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items.slice(0, MAX_ITEMS)));
-  } catch {
-    // ignore storage errors
-  }
-}
-
-export function saveSingleResult(result: GenerationResult): HistoryItem {
-  const items = getHistory();
+export async function saveSingleResult(result: GenerationResult): Promise<HistoryItem> {
+  const items = await getHistory();
   const newItem: HistoryItem = {
     id: generateId(),
     type: 'single',
@@ -69,12 +61,12 @@ export function saveSingleResult(result: GenerationResult): HistoryItem {
   );
 
   const updated = [newItem, ...filtered];
-  saveHistory(updated);
+  await saveHistory(updated);
   return newItem;
 }
 
-export function saveCompareResults(scenarios: ScenarioHistoryItem[]): HistoryItem {
-  const items = getHistory();
+export async function saveCompareResults(scenarios: ScenarioHistoryItem[]): Promise<HistoryItem> {
+  const items = await getHistory();
   const category = scenarios[0]?.result.parsedRequirement.category || '服装';
   const title = `${category} 三套方案对比`;
   const newItem: HistoryItem = {
@@ -95,28 +87,28 @@ export function saveCompareResults(scenarios: ScenarioHistoryItem[]): HistoryIte
   );
 
   const updated = [newItem, ...filtered];
-  saveHistory(updated);
+  await saveHistory(updated);
   return newItem;
 }
 
-export function toggleFavorite(id: string): HistoryItem | null {
-  const items = getHistory();
+export async function toggleFavorite(id: string): Promise<HistoryItem | null> {
+  const items = await getHistory();
   const target = items.find((item) => item.id === id);
   if (!target) return null;
 
   target.isFavorite = !target.isFavorite;
-  saveHistory(items);
+  await saveHistory(items);
   return target;
 }
 
-export function deleteHistoryItem(id: string): boolean {
-  const items = getHistory();
+export async function deleteHistoryItem(id: string): Promise<boolean> {
+  const items = await getHistory();
   const filtered = items.filter((item) => item.id !== id);
   if (filtered.length === items.length) return false;
-  saveHistory(filtered);
+  await saveHistory(filtered);
   return true;
 }
 
-export function clearHistory(): void {
-  saveHistory([]);
+export async function clearHistory(): Promise<void> {
+  await saveHistory([]);
 }

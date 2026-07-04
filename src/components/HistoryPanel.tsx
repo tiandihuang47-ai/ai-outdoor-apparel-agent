@@ -44,8 +44,9 @@ export default function HistoryPanel({ onSelect, onCompare }: HistoryPanelProps)
   const [batchSelectedIds, setBatchSelectedIds] = useState<Set<string>>(new Set());
   const [batchFeedback, setBatchFeedback] = useState<BatchExportFeedback>({ type: 'idle' });
 
-  const refresh = () => {
-    setHistory(getHistory());
+  const refresh = async () => {
+    const items = await getHistory();
+    setHistory(items);
   };
 
   useEffect(() => {
