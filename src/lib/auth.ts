@@ -12,7 +12,8 @@ function getSecret(): Uint8Array {
   if (!secret) {
     throw new Error('AUTH_SECRET 未配置');
   }
-  return new TextEncoder().encode(secret);
+  const encoded = new TextEncoder().encode(secret);
+  return new Uint8Array(encoded);
 }
 
 export async function createSession(email: string): Promise<void> {
