@@ -4,10 +4,17 @@ import { useEffect, useState } from 'react';
 
 type Provider = 'mock' | 'openai' | 'deepseek' | 'qwen';
 
+interface EnvFlags {
+  provider: boolean;
+  keys: Record<Provider, boolean>;
+  imageApiKey: boolean;
+}
+
 interface SettingsData {
   provider: Provider;
   keys: Record<Provider, string>;
   imageApiKey: string;
+  envFlags?: EnvFlags;
 }
 
 interface SettingsModalProps {
@@ -27,6 +34,11 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     provider: 'mock',
     keys: { mock: '', openai: '', deepseek: '', qwen: '' },
     imageApiKey: '',
+    envFlags: {
+      provider: false,
+      keys: { mock: false, openai: false, deepseek: false, qwen: false },
+      imageApiKey: false,
+    },
   });
   const [apiKey, setApiKey] = useState('');
   const [imageKeyInput, setImageKeyInput] = useState('');
@@ -100,13 +112,19 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         ) : (
           <div className="space-y-5">
             <div>
-              <label className="block text-sm text-slate-300 mb-2">当前 AI 厂商</label>
+              <label className="block text-sm text-slate-300 mb-2">
+                当前 AI 厂商
+                {settings.envFlags?.provider && (
+                  <span className="ml-2 text-xs text-emerald-400">（由环境变量控制）</span>
+                )}
+              </label>
               <select
                 value={settings.provider}
+                disabled={settings.envFlags?.provider}
                 onChange={(e) =>
                   setSettings((prev) => ({ ...prev, provider: e.target.value as Provider }))
                 }
-                className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {PROVIDER_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -120,15 +138,25 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               <div>
                 <label className="block text-sm text-slate-300 mb-2">
                   {PROVIDER_OPTIONS.find((p) => p.value === settings.provider)?.label.split('（')[0]} API Key
+                  {settings.envFlags?.keys[settings.provider] && (
+                    <span className="ml-2 text-xs text-emerald-400">（由环境变量控制）</span>
+                  )}
                 </label>
                 <input
                   type="password"
                   value={apiKey}
+                  disabled={settings.envFlags?.keys[settings.provider]}
                   onChange={(e) => setApiKey(e.target.value)}
-                  placeholder={settings.keys[settings.provider] ? '已保存，留空则保持原 Key' : '请输入 API Key'}
-                  className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                  placeholder={
+                    settings.envFlags?.keys[settings.provider]
+                      ? '已通过环境变量配置'
+                      : settings.keys[settings.provider]
+                        ? '已保存，留空则保持原 Key'
+                        : '请输入 API Key'
+                  }
+                  className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
-                {settings.keys[settings.provider] && (
+                {settings.keys[settings.provider] && !settings.envFlags?.keys[settings.provider] && (
                   <p className="text-xs text-slate-400 mt-1">
                     已保存：{settings.keys[settings.provider]}
                   </p>
@@ -137,15 +165,27 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             )}
 
             <div className="pt-2 border-t border-slate-700">
-              <label className="block text-sm text-slate-300 mb-2">阿里云 DashScope 生图 API Key（可选）</label>
+              <label className="block text-sm text-slate-300 mb-2">
+                阿里云 DashScope 生图 API Key（可选）
+                {settings.envFlags?.imageApiKey && (
+                  <span className="ml-2 text-xs text-emerald-400">（由环境变量控制）</span>
+                )}
+              </label>
               <input
                 type="password"
                 value={imageKeyInput}
+                disabled={settings.envFlags?.imageApiKey}
                 onChange={(e) => setImageKeyInput(e.target.value)}
-                placeholder={settings.imageApiKey ? '已保存，留空则保持原 Key' : '请输入 DashScope API Key'}
-                className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                placeholder={
+                  settings.envFlags?.imageApiKey
+                    ? '已通过环境变量配置'
+                    : settings.imageApiKey
+                      ? '已保存，留空则保持原 Key'
+                      : '请输入 DashScope API Key'
+                }
+                className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               />
-              {settings.imageApiKey && (
+              {settings.imageApiKey && !settings.envFlags?.imageApiKey && (
                 <p className="text-xs text-slate-400 mt-1">
                   已保存：{settings.imageApiKey}
                 </p>
