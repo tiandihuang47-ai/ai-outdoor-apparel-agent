@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ToastProvider } from "@/hooks/useToast";
 
 export const metadata: Metadata = {
   title: "AI户外服饰智能设计Agent",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="h-full antialiased">
-      <body className="min-h-full bg-slate-900 text-slate-100">{children}</body>
+      <body className="min-h-full bg-slate-950 text-slate-100">
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   );
 }
