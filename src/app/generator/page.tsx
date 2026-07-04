@@ -8,6 +8,9 @@ import ResultPanel from '@/components/ResultPanel';
 import ScenarioComparePanel from '@/components/ScenarioComparePanel';
 import HistoryPanel from '@/components/HistoryPanel';
 import SettingsModal from '@/components/SettingsModal';
+import GlassCard from '@/components/ui/GlassCard';
+import StepWizard from '@/components/ui/StepWizard';
+import AnimatedButton from '@/components/ui/AnimatedButton';
 import {
   saveSingleResult,
   saveCompareResults,
@@ -187,130 +190,154 @@ function GeneratorContent() {
     setScenarios(historyScenarios as Scenario[]);
   };
 
+  const stepIndex = isLoading
+    ? Math.min(currentStep, 1)
+    : result || scenarios.length > 0
+    ? 2
+    : shareLoading || shareError
+    ? 2
+    : 0;
+
   return (
-    <div className="flex flex-col lg:flex-row gap-6 h-full">
-      <div className="w-full lg:w-[420px] flex-shrink-0 space-y-6">
-        <div className="sticky top-6 space-y-6">
-          <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 backdrop-blur-sm">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-white">📝 需求输入</h2>
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/help"
-                  className="text-sm px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
-                >
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white">
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <GlassCard className="mb-6" hover={false}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <Link href="/" className="text-slate-400 hover:text-white transition-colors">
+                ← 首页
+              </Link>
+              <h1 className="text-lg font-semibold text-white">AI 户外服饰智能设计</h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link href="/help">
+                <AnimatedButton variant="secondary" className="px-4 py-2 text-sm">
                   ❓ 帮助
-                </Link>
+                </AnimatedButton>
+              </Link>
+              <AnimatedButton
+                variant="secondary"
+                className="px-4 py-2 text-sm"
+                onClick={() => setIsSettingsOpen(true)}
+              >
+                ⚙️ 配置
+              </AnimatedButton>
+            </div>
+          </div>
+          <StepWizard
+            steps={['输入需求', '生成方案', '查看结果', '导出分享']}
+            currentStep={stepIndex}
+          />
+        </GlassCard>
+
+        <div className="flex flex-col lg:flex-row gap-6 h-full">
+          <div className="w-full lg:w-[420px] flex-shrink-0 space-y-6">
+            <div className="sticky top-6 space-y-6">
+              <GlassCard>
+                <h2 className="text-lg font-semibold text-white mb-6">📝 需求输入</h2>
+                <RequirementForm
+                  onSubmit={handleSubmit}
+                  onCompareSubmit={handleCompareSubmit}
+                  isLoading={isLoading}
+                />
+              </GlassCard>
+              <HistoryPanel onSelect={handleHistorySelect} onCompare={handleHistoryCompare} />
+            </div>
+          </div>
+
+          <div className="flex-1 min-w-0">
+            {isLoading && (
+              <GlassCard className="mb-6" hover={false}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-cyan-500 border-t-transparent"></div>
+                  <span className="text-slate-300">正在生成研发方案...</span>
+                </div>
+                <div className="space-y-2">
+                  {LOADING_STEPS.map((step, i) => (
+                    <div
+                      key={step}
+                      className={`flex items-center gap-3 text-sm transition-colors ${
+                        i <= currentStep ? 'text-slate-200' : 'text-slate-600'
+                      }`}
+                    >
+                      <span
+                        className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs ${
+                          i < currentStep
+                            ? 'bg-emerald-500 text-white'
+                            : i === currentStep
+                            ? 'bg-cyan-500 text-white animate-pulse'
+                            : 'bg-slate-700 text-slate-500'
+                        }`}
+                      >
+                        {i < currentStep ? '✓' : i + 1}
+                      </span>
+                      {step}
+                    </div>
+                  ))}
+                </div>
+              </GlassCard>
+            )}
+
+            {shareLoading && (
+              <div className="flex flex-col items-center justify-center min-h-[50vh]">
+                <div className="animate-spin rounded-full h-10 w-10 border-2 border-cyan-500 border-t-transparent mb-4"></div>
+                <p className="text-slate-300">正在加载分享的方案...</p>
+              </div>
+            )}
+
+            {shareError && (
+              <GlassCard className="flex flex-col items-center justify-center min-h-[50vh] text-center" hover={false}>
+                <div className="text-6xl mb-4">🔗</div>
+                <h2 className="text-xl font-semibold text-white mb-2">分享链接已失效</h2>
+                <p className="text-slate-400 max-w-sm mb-6">
+                  该链接已过期、已被删除，或对应的方案不存在。分享链接有效期为 30 天，请让对方重新生成分享链接。
+                </p>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <AnimatedButton
+                    variant="secondary"
+                    onClick={() => router.push('/')}
+                  >
+                    返回首页
+                  </AnimatedButton>
+                  <AnimatedButton
+                    onClick={() => router.push('/generator')}
+                  >
+                    重新输入需求
+                  </AnimatedButton>
+                </div>
+              </GlassCard>
+            )}
+
+            {error && (
+              <div className="bg-red-900/30 border border-red-500/30 rounded-xl p-4 mb-6">
+                <p className="text-red-400">{error}</p>
                 <button
-                  onClick={() => setIsSettingsOpen(true)}
-                  className="text-sm px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 transition-colors"
+                  onClick={() => setError(null)}
+                  className="text-sm text-red-300 underline mt-2"
                 >
-                  ⚙️ 配置
+                  关闭
                 </button>
               </div>
-            </div>
-            <RequirementForm
-              onSubmit={handleSubmit}
-              onCompareSubmit={handleCompareSubmit}
-              isLoading={isLoading}
-            />
+            )}
+
+            {!isLoading && !shareLoading && !shareError && !error && scenarios.length > 0 && (
+              <ScenarioComparePanel
+                scenarios={scenarios}
+                onReset={() => {
+                  setScenarios([]);
+                  setResult(null);
+                }}
+              />
+            )}
+
+            {!isLoading && !shareLoading && !shareError && !error && scenarios.length === 0 && (
+              <ResultPanel result={result} />
+            )}
           </div>
-          <HistoryPanel onSelect={handleHistorySelect} onCompare={handleHistoryCompare} />
+
+          <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
         </div>
       </div>
-
-      <div className="flex-1 min-w-0">
-        {isLoading && (
-          <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 backdrop-blur-sm mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
-              <span className="text-slate-300">正在生成研发方案...</span>
-            </div>
-            <div className="space-y-2">
-              {LOADING_STEPS.map((step, i) => (
-                <div
-                  key={step}
-                  className={`flex items-center gap-3 text-sm transition-colors ${
-                    i <= currentStep ? 'text-slate-200' : 'text-slate-600'
-                  }`}
-                >
-                  <span
-                    className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs ${
-                      i < currentStep
-                        ? 'bg-green-600 text-white'
-                        : i === currentStep
-                        ? 'bg-blue-600 text-white animate-pulse'
-                        : 'bg-slate-700 text-slate-500'
-                    }`}
-                  >
-                    {i < currentStep ? '✓' : i + 1}
-                  </span>
-                  {step}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {shareLoading && (
-          <div className="flex flex-col items-center justify-center min-h-[50vh]">
-            <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-500 border-t-transparent mb-4"></div>
-            <p className="text-slate-300">正在加载分享的方案...</p>
-          </div>
-        )}
-
-        {shareError && (
-          <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-4">
-            <div className="text-6xl mb-4">🔗</div>
-            <h2 className="text-xl font-semibold text-white mb-2">分享链接已失效</h2>
-            <p className="text-slate-400 max-w-sm mb-6">
-              该链接已过期、已被删除，或对应的方案不存在。分享链接有效期为 30 天，请让对方重新生成分享链接。
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              <button
-                onClick={() => router.push('/')}
-                className="px-5 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 transition-colors"
-              >
-                返回首页
-              </button>
-              <button
-                onClick={() => router.push('/generator')}
-                className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors"
-              >
-                重新输入需求
-              </button>
-            </div>
-          </div>
-        )}
-
-        {error && (
-          <div className="bg-red-900/30 border border-red-500/30 rounded-xl p-4 mb-6">
-            <p className="text-red-400">{error}</p>
-            <button
-              onClick={() => setError(null)}
-              className="text-sm text-red-300 underline mt-2"
-            >
-              关闭
-            </button>
-          </div>
-        )}
-
-        {!isLoading && !shareLoading && !shareError && !error && scenarios.length > 0 && (
-          <ScenarioComparePanel
-            scenarios={scenarios}
-            onReset={() => {
-              setScenarios([]);
-              setResult(null);
-            }}
-          />
-        )}
-
-        {!isLoading && !shareLoading && !shareError && !error && scenarios.length === 0 && (
-          <ResultPanel result={result} />
-        )}
-      </div>
-
-      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   );
 }
