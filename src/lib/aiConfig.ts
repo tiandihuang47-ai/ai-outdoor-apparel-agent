@@ -104,7 +104,12 @@ export function saveAiConfig(config: AiConfig): void {
       : config.imageApiKey,
   };
 
-  fs.writeFileSync(CONFIG_PATH, JSON.stringify(fileConfig, null, 2), 'utf-8');
+  try {
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify(fileConfig, null, 2), 'utf-8');
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn('saveAiConfig: unable to write config file (read-only filesystem?):', message);
+  }
 }
 
 export function maskKey(key: string): string {
