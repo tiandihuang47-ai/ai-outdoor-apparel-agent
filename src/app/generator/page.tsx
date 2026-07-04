@@ -8,12 +8,17 @@ import ResultPanel from '@/components/ResultPanel';
 import ScenarioComparePanel from '@/components/ScenarioComparePanel';
 import HistoryPanel from '@/components/HistoryPanel';
 import SettingsModal from '@/components/SettingsModal';
+import LoginModal from '@/components/LoginModal';
+import UserMenu from '@/components/UserMenu';
 import GlassCard from '@/components/ui/GlassCard';
 import StepWizard from '@/components/ui/StepWizard';
 import AnimatedButton from '@/components/ui/AnimatedButton';
 import {
   saveSingleResult,
   saveCompareResults,
+  setHistoryBackend,
+  localHistory,
+  cloudHistory,
   type ScenarioHistoryItem,
   type HistoryItem,
 } from '@/lib/historyStorage';
@@ -53,11 +58,33 @@ function GeneratorContent() {
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [shareLoading, setShareLoading] = useState(false);
   const [shareError, setShareError] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userLoading, setUserLoading] = useState(true);
 
   const presetText = searchParams.get('text');
   const shareId = searchParams.get('share');
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.loggedIn && data.email) {
+          setUserEmail(data.email);
+          setHistoryBackend(cloudHistory);
+        } else {
+          setUserEmail(null);
+          setHistoryBackend(localHistory);
+        }
+      })
+      .catch(() => {
+        setUserEmail(null);
+        setHistoryBackend(localHistory);
+      })
+      .finally(() => setUserLoading(false));
+  }, []);
 
   useEffect(() => {
     if (shareId) {
@@ -88,6 +115,37 @@ function GeneratorContent() {
       handleSubmit({ text: presetText });
     }
   }, [shareId, presetText]);
+
+  const handleLogin = (email: string) => {
+    setUserEmail(email);
+    setHistoryBackend(cloudHistory);
+  };
+
+  const handleLogout = () => {
+    setUserEmail(null);
+    setHistoryBackend(localHistory);
+  };
+
+  const syncLocalToCloud = async () => {
+    const localItems = localHistory.getHistory();
+    if (localItems.length === 0) return;
+
+    try {
+      const cloudItems = await cloudHistory.getHistory();
+      const merged = [...localItems, ...cloudItems];
+      const deduped = merged.filter(
+        (item, index, self) =>
+          index === self.findIndex((t) => t.id === item.id)
+      );
+      const sorted = deduped.sort((a, b) => b.timestamp - a.timestamp).slice(0, 50);
+      await cloudHistory.saveHistory(sorted);
+      localHistory.saveHistory([]);
+      window.dispatchEvent(new StorageEvent('storage'));
+    } catch (err) {
+      console.error('Sync local to cloud failed:', err);
+      alert('同步失败，请重试');
+    }
+  };
 
   const handleSubmit = async (data: RawRequirement) => {
     setIsLoading(true);
@@ -120,7 +178,8 @@ function GeneratorContent() {
 
       const generatedResult: GenerationResult = await response.json();
       setResult(generatedResult);
-      saveSingleResult(generatedResult);
+      await saveSingleResult(generatedResult);
+      window.dispatchEvent(new StorageEvent('storage'));
       setCurrentStep(LOADING_STEPS.length - 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : '未知错误');
@@ -161,7 +220,8 @@ function GeneratorContent() {
 
       const responseData = await response.json();
       setScenarios(responseData.scenarios);
-      saveCompareResults(responseData.scenarios as ScenarioHistoryItem[]);
+      await saveCompareResults(responseData.scenarios as ScenarioHistoryItem[]);
+      window.dispatchEvent(new StorageEvent('storage'));
       setCurrentStep(LOADING_STEPS.length - 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : '未知错误');
@@ -222,6 +282,13 @@ function GeneratorContent() {
               >
                 ⚙️ 配置
               </AnimatedButton>
+              {!userLoading && (
+                <UserMenu
+                  email={userEmail}
+                  onLoginClick={() => setIsLoginOpen(true)}
+                  onLogout={handleLogout}
+                />
+              )}
             </div>
           </div>
           <StepWizard
@@ -241,7 +308,12 @@ function GeneratorContent() {
                   isLoading={isLoading}
                 />
               </GlassCard>
-              <HistoryPanel onSelect={handleHistorySelect} onCompare={handleHistoryCompare} />
+              <HistoryPanel
+                onSelect={handleHistorySelect}
+                onCompare={handleHistoryCompare}
+                userEmail={userEmail}
+                onSyncLocal={syncLocalToCloud}
+              />
             </div>
           </div>
 
@@ -336,6 +408,11 @@ function GeneratorContent() {
           </div>
 
           <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+          <LoginModal
+            isOpen={isLoginOpen}
+            onClose={() => setIsLoginOpen(false)}
+            onLogin={handleLogin}
+          />
         </div>
       </div>
     </div>

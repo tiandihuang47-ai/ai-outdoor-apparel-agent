@@ -20,6 +20,8 @@ interface Scenario {
 interface HistoryPanelProps {
   onSelect: (item: HistoryItem) => void;
   onCompare?: (scenarios: Scenario[]) => void;
+  userEmail?: string | null;
+  onSyncLocal?: () => void;
 }
 
 type BatchExportFeedback =
@@ -33,7 +35,12 @@ function formatTime(timestamp: number): string {
   return `${date.getMonth() + 1}月${date.getDate()}日 ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 }
 
-export default function HistoryPanel({ onSelect, onCompare }: HistoryPanelProps) {
+export default function HistoryPanel({
+  onSelect,
+  onCompare,
+  userEmail,
+  onSyncLocal,
+}: HistoryPanelProps) {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -92,22 +99,22 @@ export default function HistoryPanel({ onSelect, onCompare }: HistoryPanelProps)
     return filteredHistory.filter((item) => item.type === 'single');
   }, [filteredHistory]);
 
-  const handleFavorite = (e: React.MouseEvent, id: string) => {
+  const handleFavorite = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    toggleFavorite(id);
-    refresh();
+    await toggleFavorite(id);
+    await refresh();
   };
 
-  const handleDelete = (e: React.MouseEvent, id: string) => {
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    deleteHistoryItem(id);
-    refresh();
+    await deleteHistoryItem(id);
+    await refresh();
   };
 
-  const handleClear = () => {
+  const handleClear = async () => {
     if (confirm('确定清空所有历史记录吗？')) {
-      clearHistory();
-      refresh();
+      await clearHistory();
+      await refresh();
     }
   };
 
@@ -282,6 +289,14 @@ export default function HistoryPanel({ onSelect, onCompare }: HistoryPanelProps)
           >
             {batchMode ? '退出批量' : '批量导出'}
           </button>
+          {userEmail && onSyncLocal && (
+            <button
+              onClick={onSyncLocal}
+              className="text-xs text-slate-400 hover:text-cyan-400 transition-colors"
+            >
+              同步到云端
+            </button>
+          )}
           <button
             onClick={handleClear}
             className="text-xs text-slate-400 hover:text-red-400 transition-colors"
