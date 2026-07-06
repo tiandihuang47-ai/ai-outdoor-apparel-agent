@@ -1,3 +1,5 @@
+import type { TechPack } from './techpack';
+
 export type ProductCategory = string;
 export type Gender = '女款' | '男款' | '中性';
 export type Season = '春秋' | '夏季' | '冬季';
@@ -185,6 +187,7 @@ export interface GenerationResult {
   marketingCopy: MarketingCopy;
   riskWarnings: RiskWarning[];
   summary: string;
+  techPack: TechPack;
 }
 
 export interface GenerateRequest {

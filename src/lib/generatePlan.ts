@@ -32,6 +32,27 @@ export async function generatePlan(parsedRequirement: ParsedRequirement): Promis
     marketingCopy,
     riskWarnings,
     summary,
+    techPack: {
+      productName: `${parsedRequirement.stylePositioning}${parsedRequirement.category}`,
+      category: parsedRequirement.category,
+      gender: parsedRequirement.gender,
+      season: parsedRequirement.season,
+      scenes: parsedRequirement.scenes,
+      targetPrice: parsedRequirement.targetPrice,
+      stylePositioning: parsedRequirement.stylePositioning,
+      sizeChart: [],
+      bom: [],
+      construction: [],
+      colorways: [],
+      packaging: {
+        hangtag: '',
+        washingLabel: '',
+        polybag: '',
+        carton: '',
+        specialNotes: '',
+      },
+      risks: [],
+    },
   };
 }
 
