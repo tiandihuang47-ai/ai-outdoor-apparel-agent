@@ -9,14 +9,20 @@ interface ExportButtonProps {
 
 type FeedbackState =
   | { type: 'idle' }
-  | { type: 'loading'; format: 'markdown' | 'doc' }
-  | { type: 'success'; format: 'markdown' | 'doc' }
+  | { type: 'loading'; format: 'markdown' | 'doc' | 'techpack' }
+  | { type: 'success'; format: 'markdown' | 'doc' | 'techpack' }
   | { type: 'error'; message: string };
 
 export default function ExportButton({ result }: ExportButtonProps) {
   const [feedback, setFeedback] = useState<FeedbackState>({ type: 'idle' });
 
-  const handleExport = async (format: 'markdown' | 'doc') => {
+  const handleExport = async (format: 'markdown' | 'doc' | 'techpack') => {
+    if (format === 'techpack' && !result.techPack) {
+      setFeedback({ type: 'error', message: '暂无 Tech Pack 数据' });
+      setTimeout(() => setFeedback({ type: 'idle' }), 3000);
+      return;
+    }
+
     setFeedback({ type: 'loading', format });
 
     try {
@@ -37,8 +43,14 @@ export default function ExportButton({ result }: ExportButtonProps) {
       a.href = url;
 
       const dateStr = new Date().toISOString().slice(0, 10);
-      const extension = format === 'doc' ? 'doc' : 'md';
-      a.download = `研发方案_${result.parsedRequirement.category}_${dateStr}.${extension}`;
+      let fileName: string;
+      if (format === 'techpack') {
+        fileName = `TechPack_${result.parsedRequirement.category}_${dateStr}.xlsx`;
+      } else {
+        const extension = format === 'doc' ? 'doc' : 'md';
+        fileName = `研发方案_${result.parsedRequirement.category}_${dateStr}.${extension}`;
+      }
+      a.download = fileName;
 
       document.body.appendChild(a);
       a.click();
@@ -90,9 +102,24 @@ export default function ExportButton({ result }: ExportButtonProps) {
         </button>
       </div>
 
+      <button
+        onClick={() => handleExport('techpack')}
+        disabled={isLoading}
+        className="w-full py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-500 hover:from-indigo-500 hover:to-purple-400 disabled:opacity-60 disabled:cursor-not-allowed transition-all text-sm flex items-center justify-center gap-2"
+      >
+        {loadingFormat === 'techpack' ? (
+          <>
+            <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            导出中...
+          </>
+        ) : (
+          <>📊 Tech Pack Excel</>
+        )}
+      </button>
+
       {feedback.type === 'success' && (
         <div className="text-sm text-emerald-400 bg-emerald-900/20 border border-emerald-500/30 rounded-lg px-3 py-2">
-          ✅ {feedback.format === 'doc' ? 'Word' : 'Markdown'} 导出成功
+          ✅ {feedback.format === 'doc' ? 'Word' : feedback.format === 'techpack' ? 'Tech Pack Excel' : 'Markdown'} 导出成功
         </div>
       )}
 

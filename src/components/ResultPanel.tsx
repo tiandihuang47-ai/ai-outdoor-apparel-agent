@@ -14,9 +14,10 @@ import EmptyState from './ui/EmptyState';
 
 interface ResultPanelProps {
   result: GenerationResult | null;
+  onViewTechPack?: () => void;
 }
 
-export default function ResultPanel({ result }: ResultPanelProps) {
+export default function ResultPanel({ result, onViewTechPack }: ResultPanelProps) {
   if (!result) {
     return (
       <GlassCard hover={false}>
@@ -72,6 +73,16 @@ export default function ResultPanel({ result }: ResultPanelProps) {
       <GlassCard>
         <RiskWarnings warnings={result.riskWarnings} />
       </GlassCard>
+
+      <div className="flex gap-3">
+        <button
+          onClick={onViewTechPack}
+          className="flex-1 py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-500 hover:from-indigo-500 hover:to-purple-400 transition-all text-sm"
+        >
+          📋 查看 Tech Pack
+        </button>
+      </div>
+
       <ExportButton result={result} />
     </div>
   );

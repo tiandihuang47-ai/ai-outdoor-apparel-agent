@@ -10,6 +10,7 @@ import HistoryPanel from '@/components/HistoryPanel';
 import SettingsModal from '@/components/SettingsModal';
 import LoginModal from '@/components/LoginModal';
 import UserMenu from '@/components/UserMenu';
+import TechPackPanel from '@/components/TechPackPanel';
 import GlassCard from '@/components/ui/GlassCard';
 import StepWizard from '@/components/ui/StepWizard';
 import AnimatedButton from '@/components/ui/AnimatedButton';
@@ -63,6 +64,7 @@ function GeneratorContent() {
   const [shareError, setShareError] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userLoading, setUserLoading] = useState(true);
+  const [showTechPack, setShowTechPack] = useState(false);
 
   const presetText = searchParams.get('text');
   const shareId = searchParams.get('share');
@@ -403,7 +405,22 @@ function GeneratorContent() {
             )}
 
             {!isLoading && !shareLoading && !shareError && !error && scenarios.length === 0 && (
-              <ResultPanel result={result} />
+              <ResultPanel result={result} onViewTechPack={() => setShowTechPack(true)} />
+            )}
+
+            {showTechPack && result && (
+              <GlassCard className="mb-6" hover={false}>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-white">📋 Tech Pack（技术工艺单）</h2>
+                  <button
+                    onClick={() => setShowTechPack(false)}
+                    className="text-sm text-slate-400 hover:text-white"
+                  >
+                    收起
+                  </button>
+                </div>
+                <TechPackPanel techPack={result.techPack} />
+              </GlassCard>
             )}
           </div>
 
