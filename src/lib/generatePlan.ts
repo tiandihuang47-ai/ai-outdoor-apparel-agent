@@ -4,6 +4,7 @@ import { selectStyleTemplate } from './selectStyleTemplate';
 import { calculateCost } from './calculateCost';
 import { generateMarketingCopy } from './generateMarketingCopy';
 import { generateRiskWarnings } from './generateRiskWarnings';
+import { generateTechPack } from './generateTechPack';
 import type { GenerationResult, ParsedRequirement, RawRequirement } from '@/types';
 
 export async function generatePlanFromRaw(raw: RawRequirement): Promise<GenerationResult> {
@@ -23,6 +24,7 @@ export async function generatePlan(parsedRequirement: ParsedRequirement): Promis
   const marketingCopy = await generateMarketingCopy(parsedRequirement, selectedFabric, selectedStyle);
   const riskWarnings = generateRiskWarnings(parsedRequirement, selectedFabric, selectedStyle, costResult);
   const summary = generateSummary(parsedRequirement, selectedFabric, selectedStyle, costResult);
+  const techPack = await generateTechPack(parsedRequirement, selectedFabric, selectedStyle, costResult);
 
   return {
     parsedRequirement,
@@ -32,27 +34,7 @@ export async function generatePlan(parsedRequirement: ParsedRequirement): Promis
     marketingCopy,
     riskWarnings,
     summary,
-    techPack: {
-      productName: `${parsedRequirement.stylePositioning}${parsedRequirement.category}`,
-      category: parsedRequirement.category,
-      gender: parsedRequirement.gender,
-      season: parsedRequirement.season,
-      scenes: parsedRequirement.scenes,
-      targetPrice: parsedRequirement.targetPrice,
-      stylePositioning: parsedRequirement.stylePositioning,
-      sizeChart: [],
-      bom: [],
-      construction: [],
-      colorways: [],
-      packaging: {
-        hangtag: '',
-        washingLabel: '',
-        polybag: '',
-        carton: '',
-        specialNotes: '',
-      },
-      risks: [],
-    },
+    techPack,
   };
 }
 
