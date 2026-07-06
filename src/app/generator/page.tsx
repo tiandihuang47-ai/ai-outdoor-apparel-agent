@@ -315,6 +315,13 @@ function GeneratorContent() {
                 onCompare={handleHistoryCompare}
                 userEmail={userEmail}
                 onSyncLocal={syncLocalToCloud}
+                onViewTechPack={(item) => {
+                  if (item.type === 'single') {
+                    setResult(item.data as GenerationResult);
+                    setScenarios([]);
+                    setShowTechPack(true);
+                  }
+                }}
               />
             </div>
           </div>

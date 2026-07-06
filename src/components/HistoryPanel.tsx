@@ -22,6 +22,7 @@ interface HistoryPanelProps {
   onCompare?: (scenarios: Scenario[]) => void;
   userEmail?: string | null;
   onSyncLocal?: () => void;
+  onViewTechPack?: (item: HistoryItem) => void;
 }
 
 type BatchExportFeedback =
@@ -40,6 +41,7 @@ export default function HistoryPanel({
   onCompare,
   userEmail,
   onSyncLocal,
+  onViewTechPack,
 }: HistoryPanelProps) {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -459,7 +461,20 @@ export default function HistoryPanel({
                 {item.isFavorite && <span className="text-yellow-400 text-xs">★</span>}
               </div>
               <p className="text-sm text-slate-200 mt-1 truncate">{item.title}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{formatTime(item.timestamp)}</p>
+              <div className="flex items-center gap-3 mt-0.5">
+                <p className="text-xs text-slate-500">{formatTime(item.timestamp)}</p>
+                {item.type === 'single' && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onViewTechPack?.(item);
+                    }}
+                    className="text-xs text-indigo-400 hover:text-indigo-300"
+                  >
+                    Tech Pack
+                  </button>
+                )}
+              </div>
             </div>
 
             {!compareMode && !batchMode && (
