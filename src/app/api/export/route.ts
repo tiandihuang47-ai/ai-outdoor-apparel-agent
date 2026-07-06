@@ -3,6 +3,7 @@ import { exportMarkdown } from '@/lib/exportMarkdown';
 import { exportWord } from '@/lib/exportWord';
 import { exportScenariosWord, exportBatchWord } from '@/lib/exportScenariosWord';
 import { exportScenariosMarkdown, exportBatchMarkdown } from '@/lib/exportScenariosMarkdown';
+import { exportTechPackToExcel } from '@/lib/excelExport';
 import type { GenerationResult } from '@/types';
 
 interface ScenarioPayload {
@@ -69,6 +70,21 @@ export async function POST(request: NextRequest) {
 
     const result: GenerationResult = body;
     const baseName = `研发方案_${result.parsedRequirement.category}_${dateStr}`;
+
+    if (format === 'techpack') {
+      if (!result.techPack) {
+        return NextResponse.json({ error: '该方案没有 Tech Pack 数据' }, { status: 400 });
+      }
+
+      const buffer = exportTechPackToExcel(result.techPack);
+      const techPackBaseName = `TechPack_${result.parsedRequirement.category}_${dateStr}`;
+      return new NextResponse(new Uint8Array(buffer), {
+        headers: {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'Content-Disposition': `attachment; filename="${encodeURIComponent(techPackBaseName)}.xlsx"`,
+        },
+      });
+    }
 
     if (format === 'doc') {
       const html = exportWord(result);
