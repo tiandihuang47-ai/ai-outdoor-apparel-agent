@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import type { RawRequirement, Gender, Season, FunctionTag, Scene } from '@/types';
+import type { RawRequirement, Gender, Season, FunctionTag, Scene, ParsedRequirement } from '@/types';
 import AnimatedButton from '@/components/ui/AnimatedButton';
+import ImageUploader from './ImageUploader';
 
 interface RequirementFormProps {
   onSubmit: (data: RawRequirement) => void;
@@ -33,6 +34,27 @@ const FUNCTION_OPTIONS: FunctionTag[] = ['防水', '防泼水', '防风', '透�
 export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }: RequirementFormProps) {
   const [mode, setMode] = useState<'natural' | 'structured'>('natural');
   const [text, setText] = useState('');
+  const [analysisDescription, setAnalysisDescription] = useState<string | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+
+  const applyAnalysisToForm = (parsed: ParsedRequirement) => {
+    setFormData((prev) => ({
+      ...prev,
+      category: parsed.category || prev.category,
+      gender: parsed.gender || prev.gender,
+      ageRange: parsed.ageRange || prev.ageRange,
+      scenes: parsed.scenes?.length ? parsed.scenes : prev.scenes,
+      season: parsed.season || prev.season,
+      targetPrice: parsed.targetPrice || prev.targetPrice,
+      orderQuantity: parsed.orderQuantity || prev.orderQuantity,
+      functions: parsed.functionPriorities?.length ? parsed.functionPriorities : prev.functions,
+      stylePreference: parsed.stylePositioning || prev.stylePreference,
+    }));
+
+    const keywordText = parsed.styleKeywords?.length ? `，款式关键词：${parsed.styleKeywords.join('、')}` : '';
+    const newText = `根据图片分析：${parsed.category}，${parsed.gender}，${parsed.season}，适用场景${parsed.scenes?.join('、')}，风格定位${parsed.stylePositioning}${keywordText}。`;
+    setText(newText);
+  };
   const [formData, setFormData] = useState<RawRequirement>({
     category: '冲锋衣',
     gender: '女款',
@@ -117,6 +139,32 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
               </button>
             ))}
           </div>
+
+          <ImageUploader
+            onAnalyzed={(data) => {
+              setAnalysisError(null);
+              setAnalysisDescription(data.description);
+              applyAnalysisToForm(data.parsedRequirement);
+            }}
+            onError={(message) => {
+              setAnalysisError(message);
+              setAnalysisDescription(null);
+            }}
+            disabled={isLoading}
+          />
+
+          {analysisDescription && (
+            <div className="text-sm text-cyan-300 bg-cyan-900/20 border border-cyan-500/30 rounded-lg px-3 py-2">
+              ✨ 图片识别：{analysisDescription}
+            </div>
+          )}
+
+          {analysisError && (
+            <div className="text-sm text-red-300 bg-red-900/20 border border-red-500/30 rounded-lg px-3 py-2">
+              ⚠️ {analysisError}
+            </div>
+          )}
+
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}

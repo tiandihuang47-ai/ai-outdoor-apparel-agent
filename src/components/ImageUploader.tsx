@@ -1,9 +1,10 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import type { ParsedRequirement } from '@/types';
 
 interface ImageUploaderProps {
-  onAnalyzed: (data: { parsedRequirement: Record<string, unknown>; description: string }) => void;
+  onAnalyzed: (data: { parsedRequirement: ParsedRequirement; description: string }) => void;
   onError: (message: string) => void;
   disabled?: boolean;
 }
