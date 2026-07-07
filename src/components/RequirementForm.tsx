@@ -8,6 +8,7 @@ import ImageUploader from './ImageUploader';
 interface RequirementFormProps {
   onSubmit: (data: RawRequirement) => void;
   onCompareSubmit?: (data: RawRequirement) => void;
+  onImageAnalyzed?: (parsed: ParsedRequirement) => void;
   isLoading: boolean;
 }
 
@@ -31,11 +32,12 @@ const SEASON_OPTIONS: Season[] = ['春秋', '夏季', '冬季'];
 const SCENE_OPTIONS: Scene[] = ['通勤', '露营', '徒步', '骑行'];
 const FUNCTION_OPTIONS: FunctionTag[] = ['防水', '防泼水', '防风', '透湿', '轻量', '防晒', '保暖', '弹力'];
 
-export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }: RequirementFormProps) {
+export default function RequirementForm({ onSubmit, onCompareSubmit, onImageAnalyzed, isLoading }: RequirementFormProps) {
   const [mode, setMode] = useState<'natural' | 'structured'>('natural');
   const [text, setText] = useState('');
   const [analysisDescription, setAnalysisDescription] = useState<string | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [autoGenerating, setAutoGenerating] = useState(false);
 
   const applyAnalysisToForm = (parsed: ParsedRequirement) => {
     setFormData((prev) => ({
@@ -144,7 +146,9 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
             onAnalyzed={(data) => {
               setAnalysisError(null);
               setAnalysisDescription(data.description);
+              setAutoGenerating(!!onImageAnalyzed);
               applyAnalysisToForm(data.parsedRequirement);
+              onImageAnalyzed?.(data.parsedRequirement);
             }}
             onError={(message) => {
               setAnalysisError(message);
@@ -156,6 +160,7 @@ export default function RequirementForm({ onSubmit, onCompareSubmit, isLoading }
           {analysisDescription && (
             <div className="text-sm text-cyan-300 bg-cyan-900/20 border border-cyan-500/30 rounded-lg px-3 py-2">
               ✨ 图片识别：{analysisDescription}
+              {autoGenerating && '，已根据图片信息开始生成方案...'}
             </div>
           )}
 

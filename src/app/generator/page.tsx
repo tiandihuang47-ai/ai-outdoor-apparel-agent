@@ -24,7 +24,7 @@ import {
   type HistoryItem,
 } from '@/lib/historyStorage';
 import { loadSharedPlan } from '@/lib/shareStorage';
-import type { GenerationResult, RawRequirement } from '@/types';
+import type { GenerationResult, RawRequirement, ParsedRequirement } from '@/types';
 
 interface HistoryScenario {
   tier: 'basic' | 'mid' | 'premium';
@@ -191,6 +191,24 @@ function GeneratorContent() {
     }
   };
 
+  const parsedRequirementToRaw = (parsed: ParsedRequirement): RawRequirement => ({
+    category: parsed.category,
+    gender: parsed.gender,
+    ageRange: parsed.ageRange,
+    scenes: parsed.scenes,
+    season: parsed.season,
+    targetPrice: parsed.targetPrice,
+    orderQuantity: parsed.orderQuantity,
+    functions: parsed.functionPriorities,
+    stylePreference: parsed.stylePositioning,
+    notes: parsed.styleKeywords?.length ? `款式关键词：${parsed.styleKeywords.join('、')}` : '',
+  });
+
+  const handleImageAnalyzed = (parsed: ParsedRequirement) => {
+    const raw = parsedRequirementToRaw(parsed);
+    handleSubmit(raw);
+  };
+
   const handleCompareSubmit = async (data: RawRequirement) => {
     setIsLoading(true);
     setError(null);
@@ -307,6 +325,7 @@ function GeneratorContent() {
                 <RequirementForm
                   onSubmit={handleSubmit}
                   onCompareSubmit={handleCompareSubmit}
+                  onImageAnalyzed={handleImageAnalyzed}
                   isLoading={isLoading}
                 />
               </GlassCard>
