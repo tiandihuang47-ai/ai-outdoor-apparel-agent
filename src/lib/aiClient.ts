@@ -43,19 +43,96 @@ function getApiConfig(provider: string): AiApiConfig | null {
       key: config.keys.qwen,
       model: 'qwen-plus',
     },
+    gemini: {
+      url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${config.keys.gemini}`,
+      key: config.keys.gemini,
+      model: 'gemini-2.0-flash',
+    },
   };
   return apiConfigs[provider] || null;
 }
 
+function extractMockText(messages: unknown[]): string {
+  const firstUser = messages.find((m) => (m as { role?: string }).role === 'user') as
+    | { content?: string | { type: string; text?: string }[] }
+    | undefined;
+  return typeof firstUser?.content === 'string'
+    ? firstUser.content
+    : firstUser?.content?.find((c) => c.type === 'text')?.text || '';
+}
+
+function convertMessagesToGemini(messages: unknown[]) {
+  const systemMessages = messages.filter((m) => (m as { role?: string }).role === 'system');
+  const nonSystemMessages = messages.filter((m) => (m as { role?: string }).role !== 'system');
+
+  const systemInstruction = systemMessages
+    .map((m) => (m as { content?: string }).content)
+    .filter(Boolean)
+    .join('\n');
+
+  const contents = nonSystemMessages.map((m) => {
+    const role = (m as { role?: string }).role === 'assistant' ? 'model' : 'user';
+    const content = (m as { content?: string | { type: string; text?: string; image_url?: { url?: string } }[] }).content;
+
+    let parts: { text?: string; inlineData?: { mimeType: string; data: string } }[] = [];
+
+    if (typeof content === 'string') {
+      parts = [{ text: content }];
+    } else if (Array.isArray(content)) {
+      parts = content.map((item) => {
+        if (item.type === 'text') {
+          return { text: item.text || '' };
+        }
+        if (item.type === 'image_url' && item.image_url?.url) {
+          const url = item.image_url.url;
+          const base64Match = url.match(/^data:image\/[^;]+;base64,(.+)$/);
+          if (base64Match) {
+            return {
+              inlineData: {
+                mimeType: 'image/jpeg',
+                data: base64Match[1],
+              },
+            };
+          }
+        }
+        return { text: '' };
+      });
+    }
+
+    return { role, parts };
+  });
+
+  const body: Record<string, unknown> = { contents };
+  if (systemInstruction) {
+    body.systemInstruction = { parts: [{ text: systemInstruction }] };
+  }
+
+  return body;
+}
+
+async function callGemini(apiConfig: AiApiConfig, messages: unknown[]): Promise<string> {
+  const body = convertMessagesToGemini(messages);
+
+  const response = await fetch(apiConfig.url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Gemini API error: ${response.status} ${text}`);
+  }
+
+  const data = (await response.json()) as {
+    candidates?: { content?: { parts?: { text?: string }[] } }[];
+  };
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
 async function callProvider(messages: unknown[]): Promise<string> {
   if (isMockMode()) {
-    const firstUser = messages.find((m) => (m as { role?: string }).role === 'user') as
-      | { content?: string | { type: string; text?: string }[] }
-      | undefined;
-    const text =
-      typeof firstUser?.content === 'string'
-        ? firstUser.content
-        : firstUser?.content?.find((c) => c.type === 'text')?.text || '';
+    const text = extractMockText(messages);
     return `[Mock] AI响应：基于"${text.substring(0, 100)}..."的模拟结果`;
   }
 
@@ -64,6 +141,10 @@ async function callProvider(messages: unknown[]): Promise<string> {
   if (!apiConfig || !apiConfig.key) {
     console.warn(`AI provider ${config.provider} not configured, using mock`);
     return '[Mock] AI provider not configured';
+  }
+
+  if (config.provider === 'gemini') {
+    return callGemini(apiConfig, messages);
   }
 
   const response = await fetch(apiConfig.url, {

@@ -15,6 +15,7 @@ const ENV_KEY_MAP: Record<keyof AiConfig['keys'], string> = {
   openai: 'OPENAI_API_KEY',
   deepseek: 'DEEPSEEK_API_KEY',
   qwen: 'QWEN_API_KEY',
+  gemini: 'GEMINI_API_KEY',
 };
 
 const IMAGE_API_KEY_ENV = 'DASHSCOPE_API_KEY';
@@ -26,7 +27,7 @@ function readFileConfig(): AiConfig {
   } catch {
     return {
       provider: 'mock',
-      keys: { mock: '', openai: '', deepseek: '', qwen: '' },
+      keys: { mock: '', openai: '', deepseek: '', qwen: '', gemini: '' },
       imageApiKey: '',
     };
   }
@@ -55,7 +56,7 @@ function applyEnvOverrides(config: AiConfig): AiConfig {
   }
 
   const envProvider = process.env.AI_PROVIDER as AiProvider | undefined;
-  if (envProvider && ['mock', 'openai', 'deepseek', 'qwen'].includes(envProvider)) {
+  if (envProvider && ['mock', 'openai', 'deepseek', 'qwen', 'gemini'].includes(envProvider)) {
     next.provider = envProvider;
   }
 
@@ -83,6 +84,7 @@ export function getEnvKeyFlags(): {
       openai: Boolean(process.env.OPENAI_API_KEY),
       deepseek: Boolean(process.env.DEEPSEEK_API_KEY),
       qwen: Boolean(process.env.QWEN_API_KEY),
+      gemini: Boolean(process.env.GEMINI_API_KEY),
     },
     imageApiKey: Boolean(process.env.DASHSCOPE_API_KEY),
   };
@@ -98,6 +100,7 @@ export function saveAiConfig(config: AiConfig): void {
       openai: envFlags.keys.openai ? readFileConfig().keys.openai : config.keys.openai,
       deepseek: envFlags.keys.deepseek ? readFileConfig().keys.deepseek : config.keys.deepseek,
       qwen: envFlags.keys.qwen ? readFileConfig().keys.qwen : config.keys.qwen,
+      gemini: envFlags.keys.gemini ? readFileConfig().keys.gemini : config.keys.gemini,
     },
     imageApiKey: envFlags.imageApiKey
       ? readFileConfig().imageApiKey

@@ -19,6 +19,7 @@ export async function GET() {
         openai: maskKey(config.keys.openai),
         deepseek: maskKey(config.keys.deepseek),
         qwen: maskKey(config.keys.qwen),
+        gemini: maskKey(config.keys.gemini),
       },
       imageApiKey: maskKey(config.imageApiKey),
       envFlags,
@@ -46,6 +47,7 @@ export async function POST(request: NextRequest) {
         openai: keys?.openai ?? current.keys.openai,
         deepseek: keys?.deepseek ?? current.keys.deepseek,
         qwen: keys?.qwen ?? current.keys.qwen,
+        gemini: keys?.gemini ?? current.keys.gemini,
       },
       imageApiKey:
         imageApiKey && imageApiKey.length > 0 ? imageApiKey : current.imageApiKey,
@@ -67,6 +69,7 @@ export async function POST(request: NextRequest) {
         openai: maskKey(savedConfig.keys.openai),
         deepseek: maskKey(savedConfig.keys.deepseek),
         qwen: maskKey(savedConfig.keys.qwen),
+        gemini: maskKey(savedConfig.keys.gemini),
       },
       imageApiKey: maskKey(savedConfig.imageApiKey),
       envFlags,

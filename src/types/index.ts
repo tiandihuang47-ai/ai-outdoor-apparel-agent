@@ -195,4 +195,4 @@ export interface GenerateRequest {
   formData?: RawRequirement;
 }
 
-export type AiProvider = 'mock' | 'openai' | 'deepseek' | 'qwen';
+export type AiProvider = 'mock' | 'openai' | 'deepseek' | 'qwen' | 'gemini';

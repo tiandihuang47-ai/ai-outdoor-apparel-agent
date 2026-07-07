@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import GlassCard from './ui/GlassCard';
 import AnimatedButton from './ui/AnimatedButton';
 
-type Provider = 'mock' | 'openai' | 'deepseek' | 'qwen';
+type Provider = 'mock' | 'openai' | 'deepseek' | 'qwen' | 'gemini';
 
 interface EnvFlags {
   provider: boolean;
@@ -29,16 +29,17 @@ const PROVIDER_OPTIONS: { value: Provider; label: string }[] = [
   { value: 'openai', label: 'OpenAI（GPT-4o-mini）' },
   { value: 'deepseek', label: 'DeepSeek（deepseek-chat）' },
   { value: 'qwen', label: '通义千问（qwen-plus）' },
+  { value: 'gemini', label: 'Google Gemini（gemini-2.0-flash，支持图片识别）' },
 ];
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [settings, setSettings] = useState<SettingsData>({
     provider: 'mock',
-    keys: { mock: '', openai: '', deepseek: '', qwen: '' },
+    keys: { mock: '', openai: '', deepseek: '', qwen: '', gemini: '' },
     imageApiKey: '',
     envFlags: {
       provider: false,
-      keys: { mock: false, openai: false, deepseek: false, qwen: false },
+      keys: { mock: false, openai: false, deepseek: false, qwen: false, gemini: false },
       imageApiKey: false,
     },
   });
@@ -245,6 +246,14 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   className="block text-blue-400 hover:underline"
                 >
                   阿里云 DashScope
+                </a>
+                <a
+                  href="https://aistudio.google.com/app/apikey"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-blue-400 hover:underline"
+                >
+                  Google Gemini API Key
                 </a>
               </div>
             </div>
